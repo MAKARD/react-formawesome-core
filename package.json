@@ -8,8 +8,7 @@
     "test": "./node_modules/bin/cross-env NODE_ENV=test TS_NODE_PROJECT=tsconfig.json ./node_modules/.bin/nyc mocha -r jsdom-global/register -r ts-node/register -r source-map-support/register tests/bootstrap.ts tests/*.spec.tsx tests/*.spec.ts",
     "build": "./node_modules/bin/cross-env NODE_ENV=production ./node_modules/.bin/webpack",
     "coverage": "./node_modules/.bin/nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "lint": "./node_modules/.bin/tslint --project .",
-    "prepublishOnly": "npm run build"
+    "lint": "./node_modules/.bin/tslint --project ."
   },
   "repository": {
     "type": "git",
