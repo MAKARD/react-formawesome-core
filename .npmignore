@@ -1,0 +1,15 @@
+*.swp
+*~
+*.iml
+.*.haste_cache.*
+.DS_Store
+.idea
+.babelrc
+.eslintrc
+npm-debug.log
+lib
+src/
+tests/
+.nyc_output/
+node_modules/
+.travis.yml
