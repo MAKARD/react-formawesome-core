@@ -1,0 +1,26 @@
+{
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "targets": {
+                    "node": "9.0.0",
+                    "browsers": [
+                        "last 2 versions",
+                        "safari >= 10",
+                        "chrome >= 41",
+                        "ie >= 9"
+                    ]
+                }
+            }
+        ],
+        "@babel/preset-typescript",
+        "@babel/preset-react"
+    ],
+    "plugins": [
+        "@babel/plugin-proposal-object-rest-spread",
+        "@babel/plugin-transform-modules-commonjs",
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-transform-runtime"
+    ]
+}

@@ -1,16 +1,16 @@
-// tslint:disable
 const path = require("path");
-const webpack = require("webpack");
+const Webpack = require("webpack");
 
-const CleanWebpackPlugin = require("clean-webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
 
+const package = require("./package.json");
 const debug = process.env.NODE_ENV !== "production";
 
-console.log("Debug: " + debug.toString());
+console.log(`Building ${package.name} v${package.version} in ${debug ? "debug" : "prod"} mode.`);
 
-const config = {
-    entry: ["./src/index.ts"],
+module.exports = {
+    entry: ["./src/index.tsx"],
     target: "node",
     externals: [nodeExternals()],
 
@@ -18,56 +18,41 @@ const config = {
         filename: "index.js",
         path: path.resolve("./build"),
         publicPath: "/",
-        library: "react-formawesome-core",
+        library: package.name,
         libraryTarget: "umd"
     },
 
     devtool: debug ? "source-map" : false,
-
     resolve: {
-        extensions: [".ts", ".js", ".json", ".jsx", ".tsx",],
+        extensions: [".ts", ".tsx", ".js", ".json", ".jsx"],
         modules: [
-            path.resolve("node_modules"),
-            path.resolve("src")
-        ]
+            path.resolve("./node_modules"),
+            path.resolve("./src")
+        ],
+        symlinks: false
     },
-
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.tsx?$/,
                 loaders: [
                     {
                         loader: "babel-loader",
-                        query: {
-                            presets: [
-                                "react",
-                                ["env", {
-                                    "targets": {
-                                        "browsers": ["last 2 versions", "safari >= 10", "ie >= 11"]
-                                    }
-                                }]
-                            ],
-                            "plugins": ["transform-object-rest-spread"]
+                        options: {
+                            babelrc: false,
+                            extends: path.join(process.cwd(), "./.babelrc")
                         }
                     },
-                    "awesome-typescript-loader"
-                ]
+                    "awesome-typescript-loader",
+                ],
             },
             {
                 test: /\.jsx?$/,
                 exclude: [/node_modules/],
                 loader: "babel-loader",
-                query: {
-                    presets: [
-                        'react',
-                        ['env', {
-                            "targets": {
-                                "browsers": ["last 2 versions", "safari >= 10", "ie >= 11"]
-                            }
-                        }]
-                    ],
-                    "plugins": ["transform-object-rest-spread"]
+                options: {
+                    babelrc: false,
+                    extends: path.join(process.cwd(), "./.babelrc")
                 }
             },
             {
@@ -77,12 +62,9 @@ const config = {
             }
         ]
     },
-
     plugins: [
-        new webpack.NamedModulesPlugin(),
+        new Webpack.NamedModulesPlugin(),
         new CleanWebpackPlugin(path.resolve("./build")),
-        new webpack.optimize.ModuleConcatenationPlugin(),
+        new Webpack.optimize.ModuleConcatenationPlugin()
     ]
 };
-
-module.exports = config;
