@@ -18,17 +18,4 @@ export function checkForInstance(instance) {
         Object.keys(instance).length,
         "Model class does not have any attributes. Did you forget set the values?"
     );
-
-    if (instance.groups !== undefined) {
-        invariant(
-            typeof instance.groups === "object",
-            "Model class has invalid 'groups' attribute." +
-            "'groups' attribute should be an object or an getter, that returns object"
-        );
-        invariant(
-            Object.keys(instance.groups).length,
-            "Model class attribute 'groups' is does not have any values." +
-            "Remove 'groups' attribute instead initializing empty object"
-        );
-    }
 }

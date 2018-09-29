@@ -14,7 +14,7 @@ export class ModelValidator {
         this.instantiateModel(Model, defaults);
     }
 
-    private modelErrorsContainer: Map<string, string> = new Map();
+    private modelErrorsContainer: Map<string, Array<{ attribute: string, details: string }>> = new Map();
     private modelContainer: ModelContainerInterface = {};
 
     public get modelAttributes(): Array<string> {
@@ -30,27 +30,16 @@ export class ModelValidator {
         return values;
     }
 
-    public get modelGroups(): UncertainObject<Array<string>> {
-        if (this.modelContainer.instance.groups) {
-            return this.modelContainer.instance.groups;
-        }
-
-        let groups = {};
-
-        this.modelAttributes.forEach((attribute) => {
-            groups[attribute] = [attribute];
-        });
-
-        return groups;
-    }
-
     public get modelErrors(): UncertainObject<string> {
         let errors = {};
 
         Array.from(this.modelErrorsContainer.keys())
-            .forEach((attribute) => {
-                errors[attribute] = this.modelErrorsContainer.get(attribute);
-            });
+            .forEach((group) =>
+                this.modelErrorsContainer.get(group)
+                    .forEach(({ attribute, details }) => {
+                        errors[attribute] = details;
+                    })
+            );
 
         return errors;
     }
@@ -79,19 +68,29 @@ export class ModelValidator {
             }
         );
 
-        if (!groups) {
-            this.modelErrorsContainer.clear()
-        } else {
-            // groups.
+        if (errors.some(({ property }) => property === undefined)) {
+            throw new Error(
+                `Some of passed validation groups (${JSON.stringify(groups)}) does not defined in model. ` +
+                `Check '${this.modelContainer.Model.name}' model rules definition`
+            );
         }
-        // const oldErrors = group === undefined
-        //     ? []
-        //     : this.errors.filter(({ attribute }) => !(this.groups()[group] || []).includes(attribute));
 
-        errors.forEach(({ property, constraints }) => {
-            this.modelErrorsContainer.set(property, Object.keys(constraints)[0]);
+        if (!groups) {
+            this.modelErrorsContainer.clear();
+            return errors.forEach(({ property, constraints }) => {
+                this.modelErrorsContainer.set(property, [{
+                    attribute: property,
+                    details: constraints[Object.keys(constraints)[0]]
+                }]);
+            });
+        }
+
+        groups.forEach((group) => {
+            this.modelErrorsContainer.set(group, errors.map(({ property, constraints }) => ({
+                attribute: property,
+                details: constraints[Object.keys(constraints)[0]]
+            })));
         });
-
     }
 
     private instantiateModel = (Model: ValidationModelInterface, defaults?: UncertainObject<string>): void => {

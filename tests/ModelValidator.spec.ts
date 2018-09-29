@@ -13,10 +13,6 @@ describe("ModelValidator", () => {
         // check defaults
         expect(() => new ModelValidator(ExampleModel, {})).to.throw();
         expect(() => new ModelValidator(ExampleModel, "" as any)).to.throw();
-
-        // check groups
-        expect(() => new ModelValidator(class extends ExampleModel { groups = {} })).to.throw();
-        expect(() => new ModelValidator(class extends ExampleModel { groups = "" })).to.throw();
     });
 
     it("Should return model fields", () => {
@@ -66,8 +62,14 @@ describe("ModelValidator", () => {
     });
 
     it("Should", async () => {
-        const modelValidator = new ModelValidator(ExampleValidationModel);
+        const modelValidator = new ModelValidator(ExampleValidationModel, { phone: "2" });
+        // await modelValidator.validate(["phone2"]);
+        // await modelValidator.validate(["phone"]);
 
+        // await modelValidator.validate(["name"]);
         await modelValidator.validate();
+        console.log(modelValidator.modelErrors)
+        // await modelValidator.validate(["name"]);
+        // await modelValidator.validate(["phone"]);
     });
 });
