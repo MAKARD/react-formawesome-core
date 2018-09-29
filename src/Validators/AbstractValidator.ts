@@ -1,21 +1,22 @@
-import * as ClassValidator from "class-validator";
-
-import {
-    InstantiatableValidationModelInterface,
-    ValidationModelInterface,
-    ModelContainerInterface,
-    UncertainObject
-} from "./ModelValidatorInterfaces";
-
 import * as Checkers from "./utils/checkers";
 
-export class ModelValidator {
-    private modelErrorsContainer: Map<string, Array<{ attribute: string, details: string }>> = new Map();
-    private modelContainer: ModelContainerInterface = {};
+export interface UncertainObject<ReturnType = any> {
+    [key: string]: ReturnType;
+};
 
-    constructor(Model: ValidationModelInterface, defaults?: UncertainObject<string>) {
-        this.instantiateModel(Model, defaults);
-    }
+export type ValidationModelInterface = UncertainObject;
+
+export interface ModelContainerInterface {
+    instance?: ValidationModelInterface;
+    defaults?: UncertainObject<string>;
+}
+
+export abstract class AbstractValidator {
+    public abstract validate: (groups?: Array<string>) => Promise<void>;
+    public abstract get modelName(): string;
+
+    protected modelErrorsContainer: Map<string, Array<{ attribute: string, details: string }>> = new Map();
+    protected modelContainer: ModelContainerInterface = {};
 
     // #region Getters
     public get modelAttributes(): Array<string> {
@@ -45,10 +46,6 @@ export class ModelValidator {
             );
 
         return errors;
-    }
-
-    public get modelName(): string {
-        return this.modelContainer.instance.constructor.name;
     }
     // #endregion
 
@@ -81,20 +78,7 @@ export class ModelValidator {
     }
     // #endregion
 
-    public validate = async (groups?: Array<string>): Promise<void> => {
-        const errors = await ClassValidator.validate(
-            this.modelContainer.instance,
-            {
-                ...groups ? { groups } : {},
-                skipMissingProperties: true,
-                forbidUnknownValues: true,
-                validationError: {
-                    target: false,
-                    value: false
-                }
-            }
-        );
-
+    protected handleErrors = (errors, groups): void => {
         Checkers.checkForGroup(errors, groups, this.modelName);
 
         if (!groups) {
@@ -112,18 +96,5 @@ export class ModelValidator {
                 details: constraints[Object.keys(constraints)[0]]
             })))
         );
-    }
-
-    private instantiateModel = (Model: ValidationModelInterface, defaults?: UncertainObject<string>): void => {
-        Checkers.checkForModel(Model);
-        defaults !== undefined && Checkers.checkForDefaults(defaults);
-
-        const instance = new (Model as InstantiatableValidationModelInterface)();
-
-        Checkers.checkForInstance(instance);
-
-        this.modelContainer = { instance, defaults };
-
-        defaults && this.dropToDefaults();
     }
 }

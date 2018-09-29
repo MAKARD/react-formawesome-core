@@ -1,8 +1,8 @@
 import { expect } from "chai";
 
-import { ModelValidator } from "../src";
-import { ExampleModel, ExampleModelFields } from "./ExampleModel";
-import { ExampleValidationModel } from "./ExampleValidationModel";
+import { ModelValidator } from "../../src";
+import { ExampleModel } from "../ExampleModel";
+import { ExampleValidationModel } from "../ExampleValidationModel";
 
 describe("ModelValidator", () => {
     it("Should do throw errors on invalid props", () => {
@@ -10,58 +10,6 @@ describe("ModelValidator", () => {
         expect(() => new ModelValidator(class Test { })).to.throw();
         expect(() => new ModelValidator(ExampleModel, {})).to.throw();
         expect(() => new ModelValidator(ExampleModel, "" as any)).to.throw();
-    });
-
-    it("Should return model fields", () => {
-        const modelValidator = new ModelValidator(ExampleModel);
-        expect(modelValidator.modelAttributes).to.deep.equal(Object.keys(ExampleModelFields));
-    });
-
-    it("Should set model defaults", () => {
-        const modelValidator = new ModelValidator(ExampleModel);
-
-        expect(modelValidator.modelValues).to.deep.equal({});
-
-        const defaults = {
-            name: "Test name",
-            phone: "Test phone"
-        };
-
-        expect(() => modelValidator.setDefaults("" as any)).to.throw();
-
-        modelValidator.setDefaults(defaults);
-        modelValidator.dropToDefaults();
-
-        expect(modelValidator.modelValues).to.deep.equal(defaults);
-    });
-
-    it("Should drop model values to defaults", () => {
-        const defaults = {
-            name: "Test name",
-            phone: "Test phone"
-        };
-
-        const modelValidator = new ModelValidator(ExampleModel, defaults);
-
-        expect(modelValidator.modelValues).to.deep.equal(defaults);
-
-        defaults.name = "New name";
-        defaults.phone = "New phone";
-
-        modelValidator.setDefaults(defaults);
-        modelValidator.dropToDefaults();
-
-        expect(modelValidator.modelValues).to.deep.equal(defaults);
-    });
-
-    it("Should set model attribute value", () => {
-        const modelValidator = new ModelValidator(ExampleModel);
-
-        modelValidator.setModelValue("name", "Test name");
-        expect(modelValidator.modelValues).to.deep.equal({name: "Test name"});
-
-        expect(() => modelValidator.setModelValue("wrong attribute", "")).to.throw();
-        expect(() => modelValidator.setModelValue("name", {})).to.throw();
     });
 
     it("Should validate attributes according to groups", async () => {
@@ -89,7 +37,9 @@ describe("ModelValidator", () => {
 
         // #region Validate by each unique group
         await modelValidator.validate(["name"]);
-        expect(modelValidator.modelErrors).to.deep.equal({ name: exepectedErors.name });
+        expect(modelValidator.modelErrors).to.deep.equal({
+            name: exepectedErors.name
+        });
         await modelValidator.validate(["phone"]);
         expect(modelValidator.modelErrors).to.deep.equal({
             name: exepectedErors.name,
@@ -128,17 +78,5 @@ describe("ModelValidator", () => {
         delete exepectedErors.name;
         await modelValidator.validate();
         expect(modelValidator.modelErrors).to.deep.equal(exepectedErors);
-    });
-
-    it("Should throw error if passed validation group does not defined", async () => {
-        const modelValidator = new ModelValidator(ExampleValidationModel);
-
-        let error = false;
-        await (new Promise((resolve) => {
-            modelValidator.validate(["Unknown group"])
-                .catch(() => resolve(error = true));
-        }));
-
-        expect(error).to.be.true;
     });
 });

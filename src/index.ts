@@ -1,1 +1,1 @@
-export * from "./ModelValidator";
+export * from "./Validators";
