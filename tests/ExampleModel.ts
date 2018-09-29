@@ -13,15 +13,6 @@ export interface ExampleModelInterface {
 }
 
 export class ExampleModel implements ExampleModelInterface {
-    constructor(props?: Partial<ExampleModelInterface>) {
-        if (props) {
-            this.name = props.name;
-            this.phone = props.phone;
-            this.surname = props.surname;
-            this.address = props.address;
-        }
-    }
-
     public name: string = undefined;
 
     public phone: string = undefined;
