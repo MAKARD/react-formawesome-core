@@ -96,6 +96,7 @@
     "test"
   ],
   "dependencies": {
-    "invariant": "^2.2.4"
+    "invariant": "^2.2.4",
+    "class-validator": "^0.9.1"
   }
 }
