@@ -9,7 +9,7 @@ export interface InstantiatableValidationModelInterface extends ValidationModelI
 }
 
 export class ModelValidator extends AbstractValidator {
-    constructor(Model: ValidationModelInterface, defaults?: UncertainObject<string>) {
+    constructor(Model: ValidationModelInterface, defaults?: UncertainObject) {
         super();
         this.instantiateModel(Model, defaults);
     }

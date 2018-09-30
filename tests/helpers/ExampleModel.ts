@@ -1,8 +1,20 @@
 import * as ClassValidator from "class-validator";
 
-import { ExampleModel } from "./ExampleModel";
+export enum ExampleModelFields {
+    name = "name",
+    phone = "phone",
+    surname = "surname",
+    address = "address"
+}
 
-export class ExampleValidationModel extends ExampleModel {
+export interface ExampleModelInterface {
+    [ExampleModelFields.name]: string;
+    [ExampleModelFields.phone]: string;
+    [ExampleModelFields.surname]: string;
+    [ExampleModelFields.address]: string;
+}
+
+export class ExampleModel implements ExampleModelInterface {
     @ClassValidator.MinLength(4, {
         groups: ["name", "name_phone", "common"],
         message: "wrong name"
