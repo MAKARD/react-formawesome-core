@@ -11,7 +11,20 @@ export interface ModelContainerInterface {
     defaults?: UncertainObject<string>;
 }
 
-export abstract class AbstractValidator {
+export interface ValidatorPublicInterface {
+    modelName: string;
+    modelValues: UncertainObject;
+    modelErrors: UncertainObject;
+    modelAttributes: Array<string>;
+
+    dropToDefaults: () => void;
+    setDefaults: (defaults: UncertainObject) => void;
+    validate: (groups?: Array<string>) => Promise<void>;
+    setModelValue: (attribute: string, value: any) => void;
+    addErrors: (errors: Array<{ attribute: string, details: string }>) => void;
+}
+
+export abstract class AbstractValidator implements ValidatorPublicInterface {
     public abstract validate: (groups?: Array<string>) => Promise<void>;
     public abstract get modelName(): string;
 
@@ -23,7 +36,7 @@ export abstract class AbstractValidator {
         return Object.keys(this.modelContainer.instance);
     }
 
-    public get modelValues(): UncertainObject<string> {
+    public get modelValues(): UncertainObject {
         const values = {};
         this.modelAttributes.forEach((attribute) => {
             if (this.modelContainer.instance[attribute] !== undefined) {
@@ -51,12 +64,8 @@ export abstract class AbstractValidator {
 
     // #region Setters
     public setModelValue = (attribute: string, value: any): void => {
-        Checkers.checkForAttributeValue(
-            this.modelAttributes,
-            this.modelName,
-            attribute,
-            value
-        );
+        Checkers.checkForAttribute(this.modelAttributes, attribute, this.modelName);
+        Checkers.checkForValue(attribute, value);
 
         this.modelContainer.instance[attribute] = value;
     }
@@ -75,6 +84,15 @@ export abstract class AbstractValidator {
         });
 
         this.modelErrorsContainer.clear();
+    }
+
+    public addErrors = (errors: Array<{ attribute: string, details: string }>): void => {
+        errors.forEach(({ attribute, details }) => {
+            Checkers.checkForAttribute(this.modelAttributes, attribute, this.modelName);
+            Checkers.checkForDetails(details);
+
+            this.modelErrorsContainer.set(attribute, [{ attribute, details }]);
+        });
     }
     // #endregion
 

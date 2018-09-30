@@ -45,6 +45,10 @@ public setDefaults: (defaults: {[key: string]: string | boolean | number}) => vo
 ```ts
 public dropToDefaults: () => void;
 ```
+ - Method for manual adding errors
+ ```ts
+ public addErrors: (errors: errors: Array<{ attribute: string, details: string }>) => void;
+ ```
 
 ### `Internal interface`
 
@@ -182,6 +186,11 @@ validator.setModelValue(/*Not string value*/, false) // Throw error: attribute i
 validator.setModelValue("unexpectedAttribute", false) // Throw error: attribute is not exist in model/schema
 validator.setModelValue("name", {}) // Throw error: value is not a string
 validator.setModelValue("name", () => undefined) // Throw error: value is not a string
+
+validator.addErrors(/*Not array value*/) // Throw error: error is not an array
+validator.addErrors([{attribute: /*Not string value*/}]) // Throw error: attribute is not a string
+validator.addErrors([{attribute: "unexpectedAttribute"}]) // Throw error: attribute is not exist in model/schema
+validator.addErrors([{attribute: "name", details: /*Not string value*/}]) // Throw error: details is not a string
 
 (async () => {
     await validator.validate(["not defined group"]) // Throw error: Group does not defined in model/schema

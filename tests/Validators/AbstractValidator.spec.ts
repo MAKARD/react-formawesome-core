@@ -76,4 +76,15 @@ describe("AbstractValidator", () => {
 
         expect(() => modelValidator.handleErrorsMock([{}], [])).to.throw();
     });
+
+    it("Should add validation error", () => {
+        const modelValidator = new NonAbstractValidator(mockFields);
+
+        modelValidator.addErrors([{ attribute: "name", details: "test" }]);
+
+        expect(modelValidator.modelErrors).to.deep.equal({ name: "test" });
+
+        expect(() => modelValidator.addErrors([{ attribute: "test", details: "" }])).to.throw();
+        expect(() => modelValidator.addErrors([{ attribute: "name", details: true } as any])).to.throw();
+    });
 });
