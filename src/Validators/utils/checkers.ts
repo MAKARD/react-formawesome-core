@@ -25,22 +25,22 @@ export function checkForSchema(schema) {
 export function checkForInstance(instance) {
     invariant(
         Object.keys(instance).length,
-        "Model class does not have any attributes. Did you forget set the values?"
+        "Model/schema does not have any attributes. Did you forget set the values?"
     );
 }
 
 export function checkForGroup(errors, groups, modelName) {
     invariant(
         !errors.some(({ property }) => property === undefined),
-        `Some of passed validation groups (${JSON.stringify(groups)}) does not defined in model. ` +
-        `Check '${modelName}' model rules definition`
+        `Some of passed validation groups (${JSON.stringify(groups)}) does not defined in model/schema. ` +
+        `Check '${modelName}' model/schema rules definition`
     );
 }
 
 export function checkForAttributeValue(modelAttributes, modelName, attribute, value) {
     invariant(
         modelAttributes.includes(attribute),
-        `Attribute '${attribute}' does not exist in model '${modelName}'`
+        `Attribute '${attribute}' does not exist in model/schema '${modelName}'`
     );
 
     invariant(
