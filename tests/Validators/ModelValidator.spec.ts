@@ -2,7 +2,6 @@ import { expect } from "chai";
 
 import { ModelValidator } from "../../src";
 import { ExampleModel } from "../helpers/ExampleModel";
-import { ExampleValidationModel } from "../helpers/ExampleValidationModel";
 
 describe("ModelValidator", () => {
     it("Should do throw errors on invalid props", () => {
@@ -27,7 +26,7 @@ describe("ModelValidator", () => {
             name: "wrong name"
         };
 
-        const modelValidator = new ModelValidator(ExampleValidationModel, defaults);
+        const modelValidator = new ModelValidator(ExampleModel, defaults);
 
         // #region Validate all
         await modelValidator.validate();
