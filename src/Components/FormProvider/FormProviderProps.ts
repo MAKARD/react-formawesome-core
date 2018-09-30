@@ -1,8 +1,8 @@
 import * as PropTypes from "prop-types";
 
-import { ValidatorPublicInterface, UncertainObject, AbstractValidator } from "../../Validators";
+import { ValidatorPublicInterface, UncertainObject } from "../../Validators";
 
-export interface FormProps {
+export interface FormProviderProps {
     validator: ValidatorPublicInterface;
     onSubmit: (modelValues: UncertainObject) => Promise<void>;
 
@@ -18,10 +18,11 @@ export const ValidatorPropTypes: PropTypes.ValidationMap<ValidatorPublicInterfac
     dropToDefaults: PropTypes.func.isRequired,
     setModelValue: PropTypes.func.isRequired,
     setDefaults: PropTypes.func.isRequired,
+    addErrors: PropTypes.func.isRequired,
     validate: PropTypes.func.isRequired
 };
 
-export const FormPropTypes: PropTypes.ValidationMap<FormProps> = {
+export const FormProviderPropTypes: PropTypes.ValidationMap<FormProviderProps> = {
     validator: PropTypes.shape(ValidatorPropTypes).isRequired as any,
     onSubmit: PropTypes.func.isRequired,
 

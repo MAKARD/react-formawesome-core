@@ -21,6 +21,7 @@ export interface ValidatorPublicInterface {
     setDefaults: (defaults: UncertainObject) => void;
     validate: (groups?: Array<string>) => Promise<void>;
     setModelValue: (attribute: string, value: any) => void;
+    addErrors: (errors: Array<{ attribute: string, details: string }>) => void;
 }
 
 export abstract class AbstractValidator implements ValidatorPublicInterface {
@@ -85,7 +86,7 @@ export abstract class AbstractValidator implements ValidatorPublicInterface {
         this.modelErrorsContainer.clear();
     }
 
-    public addErrors = (errors: Array<{ attribute: string, details: string }>) => {
+    public addErrors = (errors: Array<{ attribute: string, details: string }>): void => {
         errors.forEach(({ attribute, details }) => {
             Checkers.checkForAttribute(this.modelAttributes, attribute, this.modelName);
             Checkers.checkForDetails(details);

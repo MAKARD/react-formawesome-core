@@ -1,14 +1,14 @@
 import * as React from "react";
 
 import { FormContext, FormContextInterface } from "./FormContext";
-import { FormProps, FormPropTypes } from "./FormProps";
+import { FormProviderProps, FormProviderPropTypes } from "./FormProviderProps";
 
 interface FormProviderState {
     loading: boolean;
 }
 
-export class FormProvider extends React.Component<FormProps, FormProviderState> {
-    public static readonly propTypes = FormPropTypes;
+export class FormProvider extends React.Component<FormProviderProps, FormProviderState> {
+    public static readonly propTypes = FormProviderPropTypes;
 
     public readonly state: FormProviderState = {
         loading: false
@@ -28,7 +28,7 @@ export class FormProvider extends React.Component<FormProps, FormProviderState> 
             onValidate: this.handleValidate,
             setModelValue: this.handleSetModelValue,
 
-            hasErrors: this.hasErors,
+            hasErrors: this.hasErrors,
             loading: this.state.loading,
 
             modelErrors: this.props.validator.modelErrors,
@@ -39,18 +39,22 @@ export class FormProvider extends React.Component<FormProps, FormProviderState> 
     protected handleSubmit = async (): Promise<void> => {
         this.setState({ loading: true });
 
-        await this.props.validator.validate();
+        await this.handleValidate();
 
-        if (this.hasErors) {
+        if (this.hasErrors) {
             return this.setState({ loading: false });
         }
 
         try {
             await this.props.onSubmit(this.props.validator.modelValues);
         } catch (error) {
-            // todo: parse error;
             this.setState({ loading: false });
-            throw error;
+
+            if (this.props.errorParser) {
+                this.props.validator.addErrors(this.props.errorParser(error));
+            } else {
+                throw error;
+            }
         }
 
         this.setState({ loading: false });
@@ -66,7 +70,7 @@ export class FormProvider extends React.Component<FormProps, FormProviderState> 
         this.forceUpdate();
     }
 
-    protected get hasErors(): boolean {
+    protected get hasErrors(): boolean {
         return !!Object.keys(this.props.validator.modelErrors).length
     }
 }

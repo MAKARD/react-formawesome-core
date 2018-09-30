@@ -20,8 +20,4 @@ export const FormContext = React.createContext<FormContextInterface>({
 
     loading: false,
     hasErrors: false,
-
-    onSubmit: () => undefined,
-    onValidate: () => undefined,
-    setModelValue: () => undefined
-});
+} as any);
