@@ -1,15 +1,15 @@
 import { expect } from "chai";
 
-import { ModelValidator } from "../../src";
-import { ExampleModel } from "../helpers/ExampleModel";
-import { ExampleValidationModel } from "../helpers/ExampleValidationModel";
+import { SchemaValidator } from "../../src";
+import { ExampleSchema } from "../helpers/ExampleSchema";
 
-describe("ModelValidator", () => {
+describe("SchemaValidator", () => {
     it("Should do throw errors on invalid props", () => {
-        expect(() => new ModelValidator("" as any)).to.throw();
-        expect(() => new ModelValidator(class Test { })).to.throw();
-        expect(() => new ModelValidator(ExampleModel, {})).to.throw();
-        expect(() => new ModelValidator(ExampleModel, "" as any)).to.throw();
+        expect(() => new SchemaValidator("" as any)).to.throw();
+        expect(() => new SchemaValidator({} as any)).to.throw();
+
+        expect(() => new SchemaValidator(ExampleSchema, {})).to.throw();
+        expect(() => new SchemaValidator(ExampleSchema, "" as any)).to.throw();
     });
 
     it("Should validate attributes according to groups", async () => {
@@ -27,7 +27,7 @@ describe("ModelValidator", () => {
             name: "wrong name"
         };
 
-        const modelValidator = new ModelValidator(ExampleValidationModel, defaults);
+        const modelValidator = new SchemaValidator(ExampleSchema, defaults);
 
         // #region Validate all
         await modelValidator.validate();

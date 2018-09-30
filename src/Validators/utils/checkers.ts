@@ -13,6 +13,15 @@ export function checkForModel(Model) {
     invariant(typeof Model === "function", "You should pass valid model class");
 }
 
+export function checkForSchema(schema) {
+    invariant(
+        typeof schema === "object"
+        && typeof schema.name === "string"
+        && typeof schema.properties === "object",
+        "You should pass valid schema object"
+    );
+}
+
 export function checkForInstance(instance) {
     invariant(
         Object.keys(instance).length,

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { NonAbstractValidator } from "../NonAbstractValidator";
+import { NonAbstractValidator } from "../helpers/NonAbstractValidator";
 
 describe("AbstractValidator", () => {
     let mockFields;

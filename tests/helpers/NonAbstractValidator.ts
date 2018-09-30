@@ -1,4 +1,4 @@
-import { AbstractValidator } from "../src";
+import { AbstractValidator } from "../../src";
 
 export class NonAbstractValidator extends AbstractValidator {
     constructor(mock) {
