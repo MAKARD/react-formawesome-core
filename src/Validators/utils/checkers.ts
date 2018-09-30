@@ -37,14 +37,23 @@ export function checkForGroup(errors, groups, modelName) {
     );
 }
 
-export function checkForAttributeValue(modelAttributes, modelName, attribute, value) {
+export function checkForAttribute(modelAttributes, attribute, modelName) {
     invariant(
         modelAttributes.includes(attribute),
         `Attribute '${attribute}' does not exist in model/schema '${modelName}'`
     );
+}
 
+export function checkForValue(attribute, value) {
     invariant(
         typeof value !== "function" && typeof value !== "object",
         `Value '${value}' can't be setted to attribute ${attribute}`
+    );
+}
+
+export function checkForDetails(details) {
+    invariant(
+        typeof details === "string",
+        "'details' value should be a string"
     );
 }
