@@ -187,6 +187,11 @@ validator.setModelValue("unexpectedAttribute", false) // Throw error: attribute 
 validator.setModelValue("name", {}) // Throw error: value is not a string
 validator.setModelValue("name", () => undefined) // Throw error: value is not a string
 
+validator.addErrors(/*Not array value*/) // Throw error: error is not an array
+validator.addErrors([{attribute: /*Not string value*/}]) // Throw error: attribute is not a string
+validator.addErrors([{attribute: "unexpectedAttribute"}]) // Throw error: attribute is not exist in model/schema
+validator.addErrors([{attribute: "name", details: /*Not string value*/}]) // Throw error: details is not a string
+
 (async () => {
     await validator.validate(["not defined group"]) // Throw error: Group does not defined in model/schema
 })();
