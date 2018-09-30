@@ -45,6 +45,10 @@ public setDefaults: (defaults: {[key: string]: string | boolean | number}) => vo
 ```ts
 public dropToDefaults: () => void;
 ```
+ - Method for manual adding errors
+ ```ts
+ public addErrors: (errors: errors: Array<{ attribute: string, details: string }>) => void;
+ ```
 
 ### `Internal interface`
 
