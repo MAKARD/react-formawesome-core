@@ -112,17 +112,17 @@ import * as ClassValidator from "class-validator"
 import { ModelValidator } from "react-formawesome-core";
 
 class UserModel {
-    ClassValidator.MinLength(4, {
+    @ClassValidator.MinLength(4, {
         groups: ["name", "personal"]
     })
     public name: string = undefined;
 
-    ClassValidator.MinLength(4, {
+    @ClassValidator.MinLength(4, {
         groups: ["surname", "personal"]
     })
     public surname: string = undefined;
 
-    ClassValidator.IsNumberString( {
+    @ClassValidator.IsNumberString( {
         groups: ["address"]
     })
     public address: string = undefined;
