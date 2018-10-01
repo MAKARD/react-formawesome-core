@@ -1,1 +1,1 @@
-export = require("class-validator");
+module.exports = require("class-validator");
