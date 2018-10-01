@@ -4,7 +4,13 @@
 [![Code coverage](https://codecov.io/gh/MAKARD/react-formawesome-core/branch/master/graphs/badge.svg)](https://codecov.io/gh/MAKARD/react-formawesome-core/branch/master)
 
 React wrapper for [class-validator](https://github.com/typestack/class-validator) library.
+
 Core of `*` library.
+
+[class-validator](https://github.com/typestack/class-validator) is not a peerDependency, so you can access it from this package:
+```ts
+import * as ClassValidator from "react-formawesome-core/class-validator";
+```
 
 # Content
  * Validators
