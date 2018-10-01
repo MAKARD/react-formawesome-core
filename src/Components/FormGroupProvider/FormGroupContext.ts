@@ -6,9 +6,9 @@ export interface FormGroupContextInterface {
 
     isFocused: boolean;
 
-    onChange: (value: any) => void;
-    onFocus: () => void;
-    onBlur: () => void;
+    onChange: (value: any) => void | Promise<void>;
+    onFocus: () => void | Promise<void>;
+    onBlur: () => void | Promise<void>;
 };
 
 export const FormGroupContext = React.createContext<FormGroupContextInterface>({
