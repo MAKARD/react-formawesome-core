@@ -70,4 +70,53 @@ describe("<FormGroupProvider />", () => {
 
         expect(context.isFocused).to.be.false;
     });
+
+    it("Should validate on passed event", async () => {
+        wrapper.setProps({
+            children: React.cloneElement((wrapper.props() as any).children, {
+                validateOn: "change"
+            }),
+        } as any);
+
+        await context.onChange("-");
+        expect(context.error).to.equal("wrong name");
+
+        wrapper.setProps({
+            children: React.cloneElement((wrapper.props() as any).children, {
+                validateOn: "blur"
+            }),
+        } as any);
+        context.onChange("ValidName");
+        expect(context.error).to.equal("wrong name");
+        await context.onBlur();
+        expect(context.error).to.be.undefined;
+
+        wrapper.setProps({
+            children: React.cloneElement((wrapper.props() as any).children, {
+                validateOn: "focus"
+            }),
+        } as any);
+        context.onChange("-");
+        expect(context.error).to.be.undefined;
+        await context.onFocus();
+        expect(context.error).to.equal("wrong name");
+
+    });
+
+    it("Should validate on passet method", async () => {
+        wrapper.setProps({
+            children: React.cloneElement((wrapper.props() as any).children, {
+                validateOn: (values, error) => {
+                    return values.name.length === 3;
+                }
+            }),
+        } as any);
+
+        await context.onChange("1");
+        expect(context.error).to.be.undefined;
+
+        await context.onChange("123");
+
+        expect(context.error).to.equal("wrong name");
+    });
 });

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { FormGroupProviderProps, FormGroupProviderPropTypes } from "./FormGroupProviderProps";
+import { FormGroupProviderProps, FormGroupProviderPropTypes, Event } from "./FormGroupProviderProps";
 import { FormGroupContext, FormGroupContextInterface } from "./FormGroupContext";
 import { FormContext, FormContextInterface } from "../FormProvider";
 
@@ -34,8 +34,8 @@ export class FormGroupProvider extends React.Component<FormGroupProviderProps, F
     protected createChildContext = (formContext: FormContextInterface): FormGroupContextInterface => {
         return {
             onChange: this.handleChange(formContext),
-            onFocus: this.handleFocus,
-            onBlur: this.handleBlur,
+            onFocus: this.handleFocus(formContext),
+            onBlur: this.handleBlur(formContext),
 
             isFocused: this.state.isFocused,
 
@@ -44,15 +44,45 @@ export class FormGroupProvider extends React.Component<FormGroupProviderProps, F
         };
     }
 
-    protected handleChange = (formContext: FormContextInterface) => (value: any): void => {
+    protected handleChange = (formContext: FormContextInterface) => (value: any): void | Promise<void> => {
         formContext.setModelValue(this.props.attribute, value);
+
+        /**
+         * model is updated but formContext is immutable
+         * so formContex.modelValues[this.props.attribute]
+         * is not updated in this scope.
+         *
+         * If value wouldn't setted, error will be thrown
+         * and code below will be not executed
+         */
+        const manualUpdatedValues = {
+            ...formContext.modelValues,
+            [this.props.attribute]: value
+        };
+
+        if (this.props.validateOn === Event.change) {
+            return formContext.onValidate([this.props.attribute]);
+        } else if (
+            typeof this.props.validateOn === "function" &&
+            this.props.validateOn(manualUpdatedValues, formContext.modelErrors)
+        ) {
+            return formContext.onValidate([this.props.attribute]);
+        }
     }
 
-    protected handleBlur = (): void => {
+    protected handleBlur = (formContext: FormContextInterface) => (): void | Promise<void> => {
         this.setState({ isFocused: false });
+
+        if (this.props.validateOn === Event.blur) {
+            return formContext.onValidate([this.props.attribute]);
+        }
     }
 
-    protected handleFocus = (): void => {
+    protected handleFocus = (formContext: FormContextInterface) => (): void | Promise<void> => {
         this.setState({ isFocused: true });
+
+        if (this.props.validateOn === Event.focus) {
+            return formContext.onValidate([this.props.attribute]);
+        }
     }
 }
