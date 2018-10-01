@@ -11,4 +11,38 @@ Component takes several props:
 ```ts
 public attribute: string;
 ```
- - `validateOn`
+ - `validateOn` - prop that define when validate value. `Optional`.
+```ts
+public validateOn: "change";
+public validateOn: "focus";
+public validateOn: "blur";
+public validateOn: (modelValues, modelErrors) => boolean;
+```
+
+### Context
+
+Component provide next context:
+ - `error` - contains validation error message.
+```ts
+public error?: string;
+```
+ - `value` - contains attribute value.
+```ts
+public value: string | boolean | number;
+```
+ - `isFocused` - flag that indicates element focus state.
+```ts
+public isFocused: boolean;
+```
+ - `onChange` - method that triggers when value in element was changed. Return promise if `validateOn` prop is `change` or `function`
+```ts
+public onChange: (value: string | boolean | number) => void | Promise<void>;
+```
+ - `onFocus` - method that triggers when element is focused. Return promise if `validateOn` prop is `focus`.
+```ts
+public onFocus: () => void | Promise<void>;
+```
+ - `onBlur` - method that triggers when element is lost focus. Return promise `validateOn` prop is `blur`.
+```ts
+public onBlur: () => void | Promise<void>;
+```
