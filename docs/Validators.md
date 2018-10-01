@@ -8,7 +8,7 @@ Both of them extends `AbstractValidator`, that provides common interface.
 
 ## AbstractValidator
 
-### `Public interface`
+### Public interface
 
 Class require to implement two methods:
  - Getter for name of model/schema
@@ -50,7 +50,7 @@ public dropToDefaults: () => void;
  public addErrors: (errors: errors: Array<{ attribute: string, details: string }>) => void;
  ```
 
-### `Internal interface`
+### Internal interface
 
 Class have two protected containers:
  - Container for errors
