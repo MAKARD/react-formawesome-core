@@ -7,8 +7,12 @@ React wrapper for [class-validator](https://github.com/typestack/class-validator
 Core of `*` library.
 
 # Content
- * [Validators](./docs/Validators.md)
+ * Validators
     + [AbstractValidator](./docs/Validators.md#abstractvalidator)
     + [ModelValidator](./docs/Validators.md#modelvalidator)
     + [SchemaValidator](./docs/Validators.md#schemavalidator)
     + [Error cases](./docs/Validators.md#error-cases)
+ * Providers
+    + [FormProvider](./docs/FormProvider.md)
+    + [FormGroupProvider](./docs/FormGroupProvider.md)
+
