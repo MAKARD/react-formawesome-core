@@ -101,18 +101,17 @@ export abstract class AbstractValidator implements ValidatorPublicInterface {
 
         if (!groups) {
             this.modelErrorsContainer.clear();
-            return errors.forEach(({ property, constraints }) => this.modelErrorsContainer.set(property, [{
-                attribute: property,
-                details: constraints[Object.keys(constraints)[0]]
-            }]));
+            return this.addErrors(this.convertVendorErrors(errors));
         }
 
         groups.forEach((group) => this.modelErrorsContainer.set(
             group,
-            errors.map(({ property, constraints }) => ({
-                attribute: property,
-                details: constraints[Object.keys(constraints)[0]]
-            })))
-        );
+            this.convertVendorErrors(errors)
+        ));
     }
+
+    private convertVendorErrors = (errors) => errors.map(({ property, constraints }) => ({
+        attribute: property,
+        details: constraints[Object.keys(constraints)[0]]
+    }));
 }

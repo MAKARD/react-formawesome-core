@@ -8,7 +8,7 @@ interface FormGroupProviderState {
     isFocused: boolean;
 }
 
-export class FormGroupProvider extends React.Component<FormGroupProviderProps, FormGroupProviderState> {
+export class FormGroupProvider extends React.PureComponent<FormGroupProviderProps, FormGroupProviderState> {
     public static readonly propTypes = FormGroupProviderPropTypes;
 
     public readonly state: FormGroupProviderState = {
