@@ -66,5 +66,8 @@ module.exports = {
         new Webpack.NamedModulesPlugin(),
         new CleanWebpackPlugin(path.resolve("./build")),
         new Webpack.optimize.ModuleConcatenationPlugin()
-    ]
+    ],
+    optimization: {
+        minimize: false
+	}
 };
