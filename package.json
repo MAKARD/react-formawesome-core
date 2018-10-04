@@ -1,7 +1,7 @@
 {
   "name": "react-formawesome-core",
   "version": "0.0.1-4",
-  "description": "-",
+  "description": "React validation form core lib",
   "main": "build/index.js",
   "typings": "build/src/index.d.ts",
   "scripts": {
@@ -16,7 +16,12 @@
     "url": "https://github.com/MAKARD/react-formawesome-core"
   },
   "keywords": [
-    "-"
+    "react",
+    "TypeScript",
+    "validation",
+    "class-validator",
+    "validate.js",
+    "form"
   ],
   "author": "Makarenko Dmitry",
   "license": "UNLICENSED",
