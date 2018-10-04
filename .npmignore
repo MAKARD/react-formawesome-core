@@ -13,3 +13,7 @@ tests/
 .nyc_output/
 node_modules/
 .travis.yml
+tslint.json
+webpack.config.js
+tsconfig.json
+.gitignore
