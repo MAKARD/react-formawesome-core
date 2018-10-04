@@ -49,6 +49,7 @@
     "@types/sinon": "^2.3.3",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.4",
+    "babel-polyfill": "^6.26.0",
     "chai": "^4.2.0",
     "class-validator": "^0.9.1",
     "clean-webpack-plugin": "^0.1.19",
@@ -103,7 +104,6 @@
   ],
   "dependencies": {
     "invariant": "^2.2.4",
-    "class-validator": "^0.9.1",
-    "@babel/runtime": "^7.1.2"
+    "class-validator": "^0.9.1"
   }
 }
