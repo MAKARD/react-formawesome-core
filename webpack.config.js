@@ -10,7 +10,7 @@ const debug = process.env.NODE_ENV !== "production";
 console.log(`Building ${package.name} v${package.version} in ${debug ? "debug" : "prod"} mode.`);
 
 module.exports = {
-    entry: ["./src/index.ts"],
+    entry: [!debug && "@babel/runtime", "./src/index.ts"],
     target: "node",
     externals: [nodeExternals()],
 

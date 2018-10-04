@@ -1,6 +1,6 @@
 {
   "name": "react-formawesome-core",
-  "version": "0.0.1-5",
+  "version": "0.0.1-6",
   "description": "React validation form core lib",
   "main": "build/index.js",
   "typings": "build/src/index.d.ts",
@@ -103,6 +103,7 @@
   ],
   "dependencies": {
     "invariant": "^2.2.4",
-    "class-validator": "^0.9.1"
+    "class-validator": "^0.9.1",
+    "@babel/runtime": "^7.1.2"
   }
 }
