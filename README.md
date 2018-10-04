@@ -5,11 +5,19 @@
 
 React wrapper for [class-validator](https://github.com/typestack/class-validator) library.
 
-Core of `*` library.
+Core of [react-native-formawesome](https://github.com/MAKARD/react-native-formawesome) library.
 
 [class-validator](https://github.com/typestack/class-validator) is not a peerDependency, so you can access it from this package:
 ```ts
 import * as ClassValidator from "react-formawesome-core/class-validator";
+```
+
+# Installation
+
+## Via NPM
+
+```bash
+ npm install --save-dev react-formawesome-core
 ```
 
 # Content
