@@ -1,6 +1,6 @@
 {
   "name": "react-formawesome-core",
-  "version": "0.0.1-5-dev",
+  "version": "1.0.0-rc1",
   "description": "React validation form core lib",
   "main": "build/index.js",
   "typings": "build/src/index.d.ts",
