@@ -18,9 +18,8 @@ export class ModelValidator extends AbstractValidator {
         return this.modelContainer.instance.constructor.name;
     }
 
-    public validate = async (groups?: Array<string>): Promise<void> => {
-        const errors = await ClassValidator.validate(
-            this.modelContainer.instance,
+    public validate = (groups?: Array<string>): Promise<void> => {
+        return ClassValidator.validate(this.modelContainer.instance,
             {
                 ...groups ? { groups } : {},
                 skipMissingProperties: true,
@@ -29,10 +28,7 @@ export class ModelValidator extends AbstractValidator {
                     target: false,
                     value: false
                 }
-            }
-        );
-
-        this.handleErrors(errors, groups);
+            }).then((errors) => this.handleErrors(errors, groups))
     }
 
     private instantiateModel = (Model: ValidationModelInterface, defaults?: UncertainObject<string>): void => {

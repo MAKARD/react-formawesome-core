@@ -16,9 +16,8 @@ export class SchemaValidator extends AbstractValidator {
         return this.schemaName;
     }
 
-    public validate = async (groups?: Array<string>): Promise<void> => {
-        const errors = await ClassValidator.validate(
-            this.modelName,
+    public validate = (groups?: Array<string>): Promise<void> => {
+        return ClassValidator.validate(this.modelName,
             this.modelContainer.instance,
             {
                 ...groups ? { groups } : {},
@@ -28,10 +27,7 @@ export class SchemaValidator extends AbstractValidator {
                     target: false,
                     value: false
                 }
-            }
-        );
-
-        this.handleErrors(errors, groups);
+            }).then((errors) => this.handleErrors(errors, groups));
     }
 
     private instantiateModel = (schema: ClassValidator.ValidationSchema, defaults?: UncertainObject): void => {
