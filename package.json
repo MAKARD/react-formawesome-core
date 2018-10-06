@@ -24,7 +24,7 @@
     "form"
   ],
   "author": "Makarenko Dmitry",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/MAKARD/react-formawesome-core/issues"
   },
