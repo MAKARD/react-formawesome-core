@@ -1,5 +1,8 @@
 import * as React from "react";
 
+import { UncertainObject } from "../../Validators";
+import * as Checkers from "../../Validators/utils/checkers";
+
 import { FormContext, FormContextInterface } from "./FormContext";
 import { FormProviderProps, FormProviderPropTypes } from "./FormProviderProps";
 
@@ -13,6 +16,8 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
     public readonly state: FormProviderState = {
         loading: false
     };
+
+    private registeredElements: UncertainObject = {};
 
     public render(): React.ReactNode {
         return (
@@ -28,12 +33,35 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
             onValidate: this.handleValidate,
             setModelValue: this.handleSetModelValue,
 
+            registerElement: this.registerElement,
+            unregisterElement: this.unregisterElement,
+
             hasErrors: this.hasErrors,
             loading: this.state.loading,
 
             modelErrors: this.props.validator.modelErrors,
             modelValues: this.props.validator.modelValues
         };
+    }
+
+    protected registerElement = (attribute: string, element: any): void => {
+        if (!element || typeof element.focus !== "function") {
+            return;
+        }
+
+        Checkers.checkForAttribute(
+            this.props.validator.modelAttributes,
+            attribute,
+            this.props.validator.modelName
+        );
+
+        this.registeredElements[attribute] = element;
+        this.forceUpdate();
+    }
+
+    protected unregisterElement = (attribute: string): void => {
+        delete this.registeredElements[attribute];
+        this.forceUpdate();
     }
 
     protected handleSubmit = async (): Promise<void> => {
@@ -52,6 +80,7 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
 
             if (this.props.errorParser) {
                 this.props.validator.addErrors(this.props.errorParser(error));
+                this.hasErrors && this.focusOnError();
             } else {
                 throw error;
             }
@@ -63,6 +92,8 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
     protected handleValidate = async (groups?: Array<string>): Promise<void> => {
         await this.props.validator.validate(groups);
         this.forceUpdate();
+
+        this.hasErrors && this.focusOnError();
     }
 
     protected handleSetModelValue = (attribute: string, value: any): void => {
@@ -72,5 +103,11 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
 
     protected get hasErrors(): boolean {
         return !!Object.keys(this.props.validator.modelErrors).length
+    }
+
+    private focusOnError = () => {
+        const element = this.registeredElements[Object.keys(this.props.validator.modelErrors)[0]];
+
+        element && element.focus();
     }
 }

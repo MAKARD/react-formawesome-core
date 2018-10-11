@@ -12,6 +12,9 @@ export interface FormContextInterface {
     onSubmit: () => Promise<void>;
     onValidate: (groups?: Array<string>) => Promise<void>;
     setModelValue: (attribute: string, value: any) => void;
+
+    unregisterElement: (attribute: string) => void;
+    registerElement: (attribute: string, element: any) => void;
 }
 
 export const FormContext = React.createContext<FormContextInterface>({
