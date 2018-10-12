@@ -130,6 +130,11 @@ describe("<FormProvider />", () => {
 
     it("Should focus element on error if it registered", async () => {
         let focused = false;
+        wrapper.setProps({
+            errorParser: () => [{ attribute: "name", details: "test" }],
+        });
+        makeValid(context);
+
         context.registerElement("name", { focus: () => focused = true });
 
         await context.onSubmit();
@@ -139,6 +144,11 @@ describe("<FormProvider />", () => {
 
     it("Should unregister element", async () => {
         let focused = false;
+        wrapper.setProps({
+            errorParser: () => [{ attribute: "name", details: "test" }],
+        });
+        makeValid(context);
+
         context.registerElement("name", { focus: () => focused = true });
 
         await context.onSubmit();

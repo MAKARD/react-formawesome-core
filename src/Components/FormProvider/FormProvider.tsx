@@ -95,8 +95,6 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
     protected handleValidate = async (groups?: Array<string>): Promise<void> => {
         await this.props.validator.validate(groups);
         this.forceUpdate();
-
-        this.hasErrors && this.focusOnError();
     }
 
     protected handleSetModelValue = (attribute: string, value: any): void => {
