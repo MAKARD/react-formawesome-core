@@ -46,6 +46,14 @@ public onFocus: () => void | Promise<void>;
 ```ts
 public onBlur: () => void | Promise<void>;
 ```
+ - `registerElement` - method for register user interactive element.
+```ts
+public registerElement: (element: any) => void;
+```
+ - `unregisterElement` - method for unregister user interactive element.
+```ts
+public unregisterElement: () => void;
+```
 
 ### Usage
 
