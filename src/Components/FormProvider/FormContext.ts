@@ -16,7 +16,7 @@ export interface FormContextInterface {
     setModelValue: (attribute: string, value: any) => void;
 
     unregisterElement: (attribute: string) => void;
-    registerElement: (attribute: string, element: any) => void;
+    registerElement: (attribute: string, element: any) => boolean | never;
 }
 
 export const FormContext = React.createContext<FormContextInterface>({

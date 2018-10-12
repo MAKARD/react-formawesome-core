@@ -47,9 +47,9 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
         };
     }
 
-    protected registerElement = (attribute: string, element: any): void => {
+    protected registerElement = (attribute: string, element: any): boolean | never => {
         if (!element || typeof element.focus !== "function") {
-            return;
+            return false;
         }
 
         Checkers.checkForAttribute(
@@ -60,6 +60,7 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
 
         this.registeredElements[attribute] = element;
         this.forceUpdate();
+        return true;
     }
 
     protected unregisterElement = (attribute: string): void => {
