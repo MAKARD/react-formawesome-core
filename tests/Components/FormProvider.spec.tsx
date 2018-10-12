@@ -117,11 +117,15 @@ describe("<FormProvider />", () => {
     });
 
     it("Should throw error if passed attribute didn't exist in model", () => {
-        expect(() => context.registerElement("test", { focus: () => undefined })).to.throw();
+        const element = { focus: () => undefined };
+        expect(() => context.registerElement("test", element)).to.throw();
+        element.focus();
     });
 
     it("Should register element", () => {
-        expect(context.registerElement("name", { focus: () => undefined })).to.be.true;
+        const element = { focus: () => undefined };
+        expect(context.registerElement("name", element)).to.be.true;
+        element.focus();
     });
 
     it("Should focus element on error if it registered", async () => {
