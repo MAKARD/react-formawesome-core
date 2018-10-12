@@ -65,6 +65,18 @@ public modelValues: {
     [attributeName: string]: boolean | string | number;
 }
 ```
+ - `unparsedError` - contains unparsed error
+```ts
+public unparsedError?: any;
+```
+ - `unregisterElement` - method for unregister user interactive element
+```ts
+public unregisterElement: (attribute: string) => void;
+```
+ - `registerElement` - method for register user interactive element
+```ts
+public registerElement: (attribute: string, element: any) => boolean | never;
+```
 
 ### Usage
 
