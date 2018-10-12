@@ -7,7 +7,7 @@
 #### Props
 
 Component takes several props:
- - `validator` - [validator](./docs/Validators.md) instance. `Required`.
+ - `validator` - [validator](./Validators.md) instance. `Required`.
 ```ts
 validator = new ModelValidator(ExampleModel);
 validator = new SchemaValidator(ExampleSchema);
@@ -20,10 +20,14 @@ public onSubmit = async (modelValues: {[key: string]: string | boolean | number}
 ```
  - `errorParser` - method that triggers on unsuccessfully submitting. `Optional`.
 ```ts
-public errorParser = (error: any): Array<{ attribute: string, details: string }> => {
+public errorParser = (error: any): Array<{ attribute: string, details: string }> | any => {
     const parsedErrors = /*SOME ERROR PARSING CODE*/
-    return parsedErrors;
+    return parsedErrors; /*OR SOMETHING ANOTHER*/
 }
+```
+ - `handleUnparsedErrors` - flag that specify should the `Form` to handle errors that `errorParser` returned when that errors cannot be applied to model. `Optional`. Needed for [UnparsedErrorProvider](./UnparsedErrorProvider.md).
+```ts
+public handleUnparsedErrors: boolean;
 ```
 
 ### Context
