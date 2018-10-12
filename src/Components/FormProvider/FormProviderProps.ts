@@ -6,7 +6,8 @@ export interface FormProviderProps {
     validator: ValidatorPublicInterface;
     onSubmit: (modelValues: UncertainObject) => Promise<void>;
 
-    errorParser?: (error: any) => Array<{ attribute: string, details: string }>;
+    errorParser?: (error: any) => Array<{ attribute: string, details: string }> | any;
+    handleUnparsedErrors?: boolean;
 }
 
 export const ValidatorPropTypes: PropTypes.ValidationMap<ValidatorPublicInterface> = {
@@ -26,5 +27,6 @@ export const FormProviderPropTypes: PropTypes.ValidationMap<FormProviderProps> =
     validator: PropTypes.shape(ValidatorPropTypes).isRequired as any,
     onSubmit: PropTypes.func.isRequired,
 
-    errorParser: PropTypes.func
+    errorParser: PropTypes.func,
+    handleUnparsedErrors: PropTypes.bool
 };

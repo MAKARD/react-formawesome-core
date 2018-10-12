@@ -7,11 +7,16 @@ export interface FormContextInterface {
     modelValues: UncertainObject;
 
     loading: boolean;
+    unparsedError?: any;
+
     hasErrors: boolean;
 
     onSubmit: () => Promise<void>;
     onValidate: (groups?: Array<string>) => Promise<void>;
     setModelValue: (attribute: string, value: any) => void;
+
+    unregisterElement: (attribute: string) => void;
+    registerElement: (attribute: string, element: any) => boolean | never;
 }
 
 export const FormContext = React.createContext<FormContextInterface>({

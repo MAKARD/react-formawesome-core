@@ -33,6 +33,9 @@ export class FormGroupProvider extends React.PureComponent<FormGroupProviderProp
 
     protected createChildContext = (formContext: FormContextInterface): FormGroupContextInterface => {
         return {
+            unregisterElement: this.handleUnergisterElement(formContext),
+            registerElement: this.handleRegisterElement(formContext),
+
             onChange: this.handleChange(formContext),
             onFocus: this.handleFocus(formContext),
             onBlur: this.handleBlur(formContext),
@@ -40,8 +43,16 @@ export class FormGroupProvider extends React.PureComponent<FormGroupProviderProp
             isFocused: this.state.isFocused,
 
             error: formContext.modelErrors[this.props.attribute],
-            value: formContext.modelValues[this.props.attribute]
+            value: formContext.modelValues[this.props.attribute],
         };
+    }
+
+    protected handleRegisterElement = (formContext: FormContextInterface) => (element: any): void => {
+        formContext.registerElement(this.props.attribute, element);
+    }
+
+    protected handleUnergisterElement = (formContext: FormContextInterface) => (): void => {
+        formContext.unregisterElement(this.props.attribute);
     }
 
     protected handleChange = (formContext: FormContextInterface) => (value: any): void | Promise<void> => {

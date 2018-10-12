@@ -55,3 +55,10 @@ export class ExampleModel implements ExampleModelInterface {
     })
     public address: string = undefined;
 }
+
+export function makeValid(context) {
+    context.setModelValue("name", "ValidName");
+    context.setModelValue("phone", "123456789");
+    context.setModelValue("surname", "ValidSurname");
+    context.setModelValue("address", "ValidAddress1");
+};

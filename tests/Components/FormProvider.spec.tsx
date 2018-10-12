@@ -11,10 +11,10 @@ import {
     FormContext
 } from "../../src";
 
-import { ExampleModel } from "../helpers/ExampleModel";
+import { ExampleModel, makeValid } from "../helpers/ExampleModel";
 
 describe("<FormProvider />", () => {
-    let wrapper: ReactWrapper<FormProviderProps>;
+    let wrapper: ReactWrapper<FormProviderProps, { unparsedError?: any }>;
     let validator: ValidatorPublicInterface;
 
     let context: FormContextInterface;
@@ -27,14 +27,11 @@ describe("<FormProvider />", () => {
             surname: "-"
         });
 
-        const onSubmit = async () => {
-            throw new Error();
-        }
-
+        const onSubmit = async () => { throw new Error() };
         const render = (value) => {
             context = value;
-            return <div />
-        }
+            return <div />;
+        };
 
         wrapper = mount(
             <FormProvider validator={validator} onSubmit={onSubmit}>
@@ -73,26 +70,17 @@ describe("<FormProvider />", () => {
         expect(context.loading).to.be.false;
 
         context.onSubmit()
-            .then(() => {
-                expect(context.loading).to.be.true;
-            })
-            .catch(() => {
-                expect(context.loading).to.be.false;
-            });
+            .then(() => expect(context.loading).to.be.true)
+            .catch(() => expect(context.loading).to.be.false);
     });
 
     it("Should call 'onSubmit' prop when validate successful", async () => {
         let submitCalled = false;
-
         wrapper.setProps({
-            onSubmit: async () => {
-                submitCalled = true;
-            }
+            onSubmit: async () => { submitCalled = true }
         });
-        context.setModelValue("name", "ValidName");
-        context.setModelValue("phone", "123456789");
-        context.setModelValue("surname", "ValidSurname");
-        context.setModelValue("address", "ValidAddress1");
+
+        makeValid(context);
 
         await context.onSubmit();
         expect(submitCalled).to.be.true;
@@ -100,18 +88,12 @@ describe("<FormProvider />", () => {
 
     it("Should call 'errorParser' if it passed, when 'onSubmit' throws error", async () => {
         wrapper.setProps({
-            errorParser: () => {
-                return [{
-                    attribute: "name",
-                    details: "test"
-                }]
-            }
+            errorParser: () => [{
+                attribute: "name",
+                details: "test"
+            }]
         });
-
-        context.setModelValue("name", "ValidName");
-        context.setModelValue("phone", "123456789");
-        context.setModelValue("surname", "ValidSurname");
-        context.setModelValue("address", "ValidAddress1");
+        makeValid(context);
 
         await context.onSubmit();
 
@@ -119,17 +101,78 @@ describe("<FormProvider />", () => {
     });
 
     it("Should throw error when 'onSubmit' throws error", async () => {
-        context.setModelValue("name", "ValidName");
-        context.setModelValue("phone", "123456789");
-        context.setModelValue("surname", "ValidSurname");
-        context.setModelValue("address", "ValidAddress1");
+        makeValid(context);
 
         let throwed = false;
         await (new Promise((resolve) => {
-            context.onSubmit().catch(() => {
-                throwed = true;
-                resolve();
-            });
+            context.onSubmit().catch(() => resolve(throwed = true));
+        }));
+
+        expect(throwed).to.be.true;
+    });
+
+    it("Should do nothing on 'registerElement' if element is undefined or didn't have 'focus' method", () => {
+        expect(context.registerElement("test", undefined)).to.be.false;
+        expect(context.registerElement("test", {})).to.be.false;
+    });
+
+    it("Should throw error if passed attribute didn't exist in model", () => {
+        const element = { focus: () => undefined };
+        expect(() => context.registerElement("test", element)).to.throw();
+        element.focus();
+    });
+
+    it("Should register element", () => {
+        const element = { focus: () => undefined };
+        expect(context.registerElement("name", element)).to.be.true;
+        element.focus();
+    });
+
+    it("Should focus element on error if it registered", async () => {
+        let focused = false;
+        context.registerElement("name", { focus: () => focused = true });
+
+        await context.onSubmit();
+
+        expect(focused).to.be.true;
+    });
+
+    it("Should unregister element", async () => {
+        let focused = false;
+        context.registerElement("name", { focus: () => focused = true });
+
+        await context.onSubmit();
+
+        expect(focused).to.be.true;
+
+        focused = false;
+        context.unregisterElement("name");
+
+        await context.onSubmit();
+
+        expect(focused).to.be.false;
+    });
+
+    it("Should store unparsed error", async () => {
+        wrapper.setProps({
+            handleUnparsedErrors: true,
+            errorParser: () => "test"
+        });
+
+        makeValid(context);
+
+        await context.onSubmit();
+
+        expect(wrapper.instance().state.unparsedError).to.equal("test");
+
+        wrapper.setProps({
+            handleUnparsedErrors: false,
+            errorParser: () => "test"
+        });
+
+        let throwed = false;
+        await (new Promise((resolve) => {
+            context.onSubmit().catch(() => resolve(throwed = true));
         }));
 
         expect(throwed).to.be.true;
