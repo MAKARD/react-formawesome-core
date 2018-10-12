@@ -1,6 +1,6 @@
 # FormGroupProvider
 
-`FormGroupProvider` component provide methods and states for controlling user-interactive elements (input / select ..ets). Can control `exactly one` interactive element.
+`FormGroupProvider` component is provide methods and states for controlling user-interactive elements (input / select ..ets). Can control `exactly one` interactive element.
 
 ### Public interface
 
@@ -45,4 +45,23 @@ public onFocus: () => void | Promise<void>;
  - `onBlur` - method that triggers when element is lost focus. Return promise `validateOn` prop is `blur`.
 ```ts
 public onBlur: () => void | Promise<void>;
+```
+
+### Usage
+
+```tsx
+import * as React from "react";
+import { FormGroupProvider, FormGroupProviderProps } from "react-formawesome-core";
+
+class MyFormGroupWrapper extends React.Component<FormGroupProviderProps> {
+    public render(): React.ReactNode {
+        return (
+            <FormGroupProvider {...this.props}>
+                <div>
+                    {this.props.children}
+                </div>
+            </FormGroupProvider>
+        );
+    }
+}
 ```

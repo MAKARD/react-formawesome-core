@@ -29,4 +29,4 @@ import * as ClassValidator from "react-formawesome-core/class-validator";
  * Providers
     + [FormProvider](./docs/FormProvider.md)
     + [FormGroupProvider](./docs/FormGroupProvider.md)
-
+    + [UnparsedErrorProvider](./docs/UnparsedErrorProvider.md)
