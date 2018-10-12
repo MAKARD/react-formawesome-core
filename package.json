@@ -1,11 +1,11 @@
 {
   "name": "react-formawesome-core",
-  "version": "1.0.0-rc3-dev",
+  "version": "1.0.0-rc3-dev-2",
   "description": "React validation form core lib",
   "main": "build/index.js",
   "typings": "build/src/index.d.ts",
   "scripts": {
-    "test": "./node_modules/.bin/cross-env NODE_ENV=test TS_NODE_PROJECT=tsconfig.json ./node_modules/.bin/nyc mocha -r jsdom-global/register -r ts-node/register -r source-map-support/register tests/bootstrap.ts tests/*/*.spec.tsx tests/*/*.spec.ts",
+    "test": "./node_modules/.bin/cross-env NODE_ENV=test TS_NODE_PROJECT=tsconfig.json ./node_modules/.bin/nyc --reporter=html mocha -r jsdom-global/register -r ts-node/register -r source-map-support/register tests/bootstrap.ts tests/*/*.spec.tsx tests/*/*.spec.ts",
     "build": "./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/.bin/webpack --mode production --config=./webpack.config.js",
     "coverage": "./node_modules/.bin/nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "lint": "./node_modules/.bin/tslint --project .",

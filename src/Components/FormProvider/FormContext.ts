@@ -7,6 +7,8 @@ export interface FormContextInterface {
     modelValues: UncertainObject;
 
     loading: boolean;
+    unparsedError?: any;
+
     hasErrors: boolean;
 
     onSubmit: () => Promise<void>;

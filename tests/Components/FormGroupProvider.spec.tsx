@@ -2,29 +2,30 @@ import { expect } from "chai";
 import * as React from "react";
 import { mount, ReactWrapper } from "enzyme";
 
-import { FormGroupProviderProps } from "../../src/Components/FormGroupProvider/FormGroupProviderProps";
 import { ExampleModel } from "../helpers/ExampleModel";
 
 import {
     FormGroupContextInterface,
     ValidatorPublicInterface,
+    FormProviderProps,
     FormGroupProvider,
     FormGroupContext,
     ModelValidator,
-    FormProvider
+    FormProvider,
+    FormContext,
 } from "../../src";
 
 describe("<FormGroupProvider />", () => {
-    let wrapper: ReactWrapper<FormGroupProviderProps>;
+    let wrapper: ReactWrapper<FormProviderProps>;
     let validator: ValidatorPublicInterface;
     let context: FormGroupContextInterface;
 
     beforeEach(() => {
         validator = new ModelValidator(ExampleModel, {
-            name: "-",
-            phone: "-",
-            address: "-",
-            surname: "-"
+            name: "qwerty",
+            phone: "123456",
+            address: "qwerty123",
+            surname: "qwerty"
         });
 
         const onSubmit = async () => undefined;
@@ -36,7 +37,7 @@ describe("<FormGroupProvider />", () => {
         }
 
         wrapper = mount(
-            <FormProvider validator={validator} onSubmit={onSubmit}>
+            <FormProvider onSubmit={onSubmit} validator={validator}>
                 <FormGroupProvider attribute="name">
                     <FormGroupContext.Consumer>
                         {render}
@@ -118,5 +119,40 @@ describe("<FormGroupProvider />", () => {
         await context.onChange("123");
 
         expect(context.error).to.equal("wrong name");
+    });
+
+    it("Should register/unregister element", () => {
+        let formContext;
+        let registered = false
+        let unregistered = false;
+        const children = React.cloneElement((wrapper.props() as any).children);
+
+        const render = (value) => {
+            formContext = value;
+
+            formContext.registerElement = () => {
+                registered = true;
+            };
+
+            formContext.unregisterElement = () => {
+                unregistered = true;
+            };
+
+            return children;
+        }
+
+        wrapper.setProps({
+            children: (
+                <FormContext.Consumer>
+                    {render}
+                </FormContext.Consumer>
+            )
+        } as any);
+
+        context.registerElement("");
+        context.unregisterElement();
+
+        expect(registered).to.be.true;
+        expect(unregistered).to.be.true;
     });
 });

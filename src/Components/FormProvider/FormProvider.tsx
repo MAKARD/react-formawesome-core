@@ -8,6 +8,7 @@ import { FormProviderProps, FormProviderPropTypes } from "./FormProviderProps";
 
 interface FormProviderState {
     loading: boolean;
+    unparsedError?: any;
 }
 
 export class FormProvider extends React.Component<FormProviderProps, FormProviderState> {
@@ -37,7 +38,9 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
             unregisterElement: this.unregisterElement,
 
             hasErrors: this.hasErrors,
+
             loading: this.state.loading,
+            unparsedError: this.state.unparsedError,
 
             modelErrors: this.props.validator.modelErrors,
             modelValues: this.props.validator.modelValues
@@ -64,8 +67,8 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
         this.forceUpdate();
     }
 
-    protected handleSubmit = async (): Promise<void> => {
-        this.setState({ loading: true });
+    protected handleSubmit = async (): Promise<void> | never => {
+        this.setState({ loading: true, unparsedError: undefined });
 
         await this.handleValidate();
 
@@ -79,8 +82,7 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
             this.setState({ loading: false });
 
             if (this.props.errorParser) {
-                this.props.validator.addErrors(this.props.errorParser(error));
-                this.hasErrors && this.focusOnError();
+                this.tryToParseError(error);
             } else {
                 throw error;
             }
@@ -109,5 +111,21 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
         const element = this.registeredElements[Object.keys(this.props.validator.modelErrors)[0]];
 
         element && element.focus();
+    }
+
+    private tryToParseError = (error: any): void | never => {
+        const parsedErrors = this.props.errorParser(error);
+
+        if (Array.isArray(parsedErrors)) {
+            this.props.validator.addErrors(parsedErrors);
+            this.hasErrors && this.focusOnError();
+            return;
+        };
+
+        if (this.props.handleUnparsedErrors) {
+            return this.setState({ unparsedError: parsedErrors });
+        } else {
+            throw error;
+        }
     }
 }
