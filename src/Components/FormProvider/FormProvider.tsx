@@ -95,8 +95,6 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
     protected handleValidate = async (groups?: Array<string>): Promise<void> => {
         await this.props.validator.validate(groups);
         this.forceUpdate();
-
-        this.hasErrors && this.focusOnError();
     }
 
     protected handleSetModelValue = (attribute: string, value: any): void => {
@@ -117,6 +115,7 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
     private tryToParseError = (error: any): void | never => {
         const parsedErrors = this.props.errorParser(error);
 
+        console.log(parsedErrors);
         if (Array.isArray(parsedErrors)) {
             this.props.validator.addErrors(parsedErrors);
             this.hasErrors && this.focusOnError();
