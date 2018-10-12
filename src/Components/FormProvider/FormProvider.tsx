@@ -115,7 +115,6 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
     private tryToParseError = (error: any): void | never => {
         const parsedErrors = this.props.errorParser(error);
 
-        console.log(parsedErrors);
         if (Array.isArray(parsedErrors)) {
             this.props.validator.addErrors(parsedErrors);
             this.hasErrors && this.focusOnError();
