@@ -74,6 +74,7 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
         await this.handleValidate();
 
         if (this.hasErrors) {
+            this.focusOnError();
             return this.setState({ loading: false });
         }
 
