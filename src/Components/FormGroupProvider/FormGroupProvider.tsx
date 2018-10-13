@@ -71,12 +71,11 @@ export class FormGroupProvider extends React.PureComponent<FormGroupProviderProp
             [this.props.attribute]: value
         };
 
-        if (this.props.validateOn === Event.change) {
+        if (this.shouldValidateOnChange) {
             return formContext.onValidate([this.props.attribute]);
-        } else if (
-            typeof this.props.validateOn === "function" &&
-            this.props.validateOn(manualUpdatedValues, formContext.modelErrors)
-        ) {
+        }
+
+        if (this.shouldValidateOnMethod(manualUpdatedValues, formContext.modelErrors)) {
             return formContext.onValidate([this.props.attribute]);
         }
     }
@@ -84,7 +83,7 @@ export class FormGroupProvider extends React.PureComponent<FormGroupProviderProp
     protected handleBlur = (formContext: FormContextInterface) => (): void | Promise<void> => {
         this.setState({ isFocused: false });
 
-        if (this.props.validateOn === Event.blur) {
+        if (this.shouldValidateOnBlur) {
             return formContext.onValidate([this.props.attribute]);
         }
     }
@@ -92,8 +91,42 @@ export class FormGroupProvider extends React.PureComponent<FormGroupProviderProp
     protected handleFocus = (formContext: FormContextInterface) => (): void | Promise<void> => {
         this.setState({ isFocused: true });
 
-        if (this.props.validateOn === Event.focus) {
+        if (this.shouldValidateOnFocus) {
             return formContext.onValidate([this.props.attribute]);
         }
+    }
+
+    private get shouldValidateOnBlur(): boolean {
+        if (Array.isArray(this.props.validateOn) && this.props.validateOn.includes(Event.blur)) {
+            return true;
+        }
+
+        return this.props.validateOn === Event.blur;
+    }
+
+    private get shouldValidateOnFocus(): boolean {
+        if (Array.isArray(this.props.validateOn) && this.props.validateOn.includes(Event.focus)) {
+            return true;
+        }
+
+        return this.props.validateOn === Event.focus;
+    }
+
+    private get shouldValidateOnChange(): boolean {
+        if (Array.isArray(this.props.validateOn) && this.props.validateOn.includes(Event.change)) {
+            return true;
+        }
+
+        return this.props.validateOn === Event.change;
+    }
+
+    private shouldValidateOnMethod = (values, errors): boolean => {
+        if (Array.isArray(this.props.validateOn)) {
+            const conditionMethod: any = this.props.validateOn.find((event) => typeof event === "function");
+
+            return conditionMethod && conditionMethod(values, errors);
+        }
+
+        return typeof this.props.validateOn === "function" && this.props.validateOn(values, errors);
     }
 }

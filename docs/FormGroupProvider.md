@@ -17,6 +17,10 @@ public validateOn: "change";
 public validateOn: "focus";
 public validateOn: "blur";
 public validateOn: (modelValues, modelErrors) => boolean;
+public validateOn: ["change", "focus", "blur"] // Ok
+public validateOn: ["change", (modelValues, modelErrors) => boolean] // 'change' have highest priority and second item will be ignored
+public validateOn: [(modelValues, modelErrors) => boolean, (modelValues, modelErrors) => boolean] // first item have highest priority and second item will be ignored
+public validateOn: ["focus", "blur", (modelValues, modelErrors) => boolean] // Ok
 ```
 
 ### Context
