@@ -86,6 +86,14 @@ export abstract class AbstractValidator implements ValidatorPublicInterface {
         this.modelErrorsContainer.clear();
     }
 
+    public clear = (): void => {
+        this.modelAttributes.forEach((attribute) => {
+            delete this.modelContainer.instance[attribute];
+        });
+
+        this.modelErrorsContainer.clear();
+    }
+
     public addErrors = (errors: Array<{ attribute: string, details: string }>): void => {
         errors.forEach(({ attribute, details }) => {
             Checkers.checkForAttribute(this.modelAttributes, attribute, this.modelName);
