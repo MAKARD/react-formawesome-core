@@ -74,18 +74,14 @@ describe("<FormGroupProvider />", () => {
 
     it("Should validate on passed event", async () => {
         wrapper.setProps({
-            children: React.cloneElement((wrapper.props() as any).children, {
-                validateOn: "change"
-            }),
+            children: React.cloneElement((wrapper.props() as any).children, { validateOn: "change" })
         } as any);
 
         await context.onChange("-");
         expect(context.error).to.equal("wrong name");
 
         wrapper.setProps({
-            children: React.cloneElement((wrapper.props() as any).children, {
-                validateOn: "blur"
-            }),
+            children: React.cloneElement((wrapper.props() as any).children, { validateOn: "blur" })
         } as any);
         context.onChange("ValidName");
         expect(context.error).to.equal("wrong name");
@@ -93,23 +89,18 @@ describe("<FormGroupProvider />", () => {
         expect(context.error).to.be.undefined;
 
         wrapper.setProps({
-            children: React.cloneElement((wrapper.props() as any).children, {
-                validateOn: "focus"
-            }),
+            children: React.cloneElement((wrapper.props() as any).children, { validateOn: "focus" })
         } as any);
         context.onChange("-");
         expect(context.error).to.be.undefined;
         await context.onFocus();
         expect(context.error).to.equal("wrong name");
-
     });
 
     it("Should validate on passet method", async () => {
         wrapper.setProps({
             children: React.cloneElement((wrapper.props() as any).children, {
-                validateOn: (values, error) => {
-                    return values.name.length === 3;
-                }
+                validateOn: (values, error) => values.name.length === 3
             }),
         } as any);
 
@@ -121,6 +112,46 @@ describe("<FormGroupProvider />", () => {
         expect(context.error).to.equal("wrong name");
     });
 
+    it("Should validate on passed array of conditions", async () => {
+        wrapper.setProps({
+            children: React.cloneElement((wrapper.props() as any).children, { validateOn: ["blur", "focus"] })
+        } as any);
+
+        context.onChange("-");
+        await context.onFocus();
+        expect(context.error).to.equal("wrong name");
+
+        context.onChange("validName");
+        await context.onBlur();
+        expect(context.error).to.be.undefined;
+
+        wrapper.setProps({
+            children: React.cloneElement((wrapper.props() as any).children, { validateOn: ["focus", "change"] })
+        } as any);
+
+        await context.onChange("-");
+        expect(context.error).to.equal("wrong name");
+
+        context.onChange("validName");
+        await context.onFocus();
+        expect(context.error).to.be.undefined;
+
+        wrapper.setProps({
+            children: React.cloneElement((wrapper.props() as any).children, {
+                validateOn: ["focus", (v) => v.name.length > 1]
+            })
+        } as any);
+
+        await context.onChange("-");
+        expect(context.error).to.be.undefined;
+
+        await context.onFocus();
+        expect(context.error).to.equal("wrong name");
+
+        await context.onChange("validName");
+        expect(context.error).to.be.undefined;
+    });
+
     it("Should register/unregister element", () => {
         let formContext;
         let registered = false
@@ -130,13 +161,8 @@ describe("<FormGroupProvider />", () => {
         const render = (value) => {
             formContext = value;
 
-            formContext.registerElement = () => {
-                registered = true;
-            };
-
-            formContext.unregisterElement = () => {
-                unregistered = true;
-            };
+            formContext.registerElement = () => registered = true;
+            formContext.unregisterElement = () => unregistered = true;
 
             return children;
         }
