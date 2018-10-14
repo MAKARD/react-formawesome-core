@@ -41,6 +41,7 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
 
             loading: this.state.loading,
             unparsedError: this.state.unparsedError,
+            registeredElements: this.registeredElements,
 
             modelErrors: this.props.validator.modelErrors,
             modelValues: this.props.validator.modelValues
