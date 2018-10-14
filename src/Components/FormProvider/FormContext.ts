@@ -8,6 +8,7 @@ export interface FormContextInterface {
 
     loading: boolean;
     unparsedError?: any;
+    registeredElements: UncertainObject;
 
     hasErrors: boolean;
 
@@ -25,4 +26,5 @@ export const FormContext = React.createContext<FormContextInterface>({
 
     loading: false,
     hasErrors: false,
+    registeredElements: {}
 } as any);
