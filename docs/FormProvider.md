@@ -77,6 +77,10 @@ public unregisterElement: (attribute: string) => void;
 ```ts
 public registerElement: (attribute: string, element: any) => boolean | never;
 ```
+ - `registeredElements` - list of registered elemtns
+```ts
+public registeredElements: {[key: string]: { focus: () => void }}
+```
 
 ### Usage
 
