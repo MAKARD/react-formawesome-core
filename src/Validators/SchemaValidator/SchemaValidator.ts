@@ -40,11 +40,13 @@ export class SchemaValidator extends AbstractValidator {
         this.modelContainer = {
             instance: {},
             defaults
-        }
+        };
 
         Object.keys(schema.properties).forEach((attribute) => {
             this.modelContainer.instance[attribute] = undefined;
         });
+
+        this.protectContainer();
 
         defaults && this.dropToDefaults();
     }
