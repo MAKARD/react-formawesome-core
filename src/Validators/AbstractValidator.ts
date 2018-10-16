@@ -88,7 +88,7 @@ export abstract class AbstractValidator implements ValidatorPublicInterface {
 
     public clear = (): void => {
         this.modelAttributes.forEach((attribute) => {
-            delete this.modelContainer.instance[attribute];
+            this.modelContainer.instance[attribute] = undefined;
         });
 
         this.modelErrorsContainer.clear();
@@ -116,6 +116,11 @@ export abstract class AbstractValidator implements ValidatorPublicInterface {
             group,
             this.convertVendorErrors(errors)
         ));
+    }
+
+    protected protectContainer = (): void => {
+        Object.freeze(this.modelContainer);
+        Object.seal(this.modelContainer.instance);
     }
 
     private convertVendorErrors = (errors) => errors.map(({ property, constraints }) => ({

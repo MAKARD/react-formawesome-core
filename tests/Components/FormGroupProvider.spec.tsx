@@ -34,7 +34,7 @@ describe("<FormGroupProvider />", () => {
         const render = (value) => {
             context = value;
             return <div />;
-        }
+        };
 
         wrapper = mount(
             <FormProvider onSubmit={onSubmit} validator={validator}>

@@ -41,6 +41,8 @@ export class ModelValidator extends AbstractValidator {
 
         this.modelContainer = { instance, defaults };
 
+        this.protectContainer();
+
         defaults && this.dropToDefaults();
     }
 }
