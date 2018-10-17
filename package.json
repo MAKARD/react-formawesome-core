@@ -61,7 +61,7 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-test-renderer": "^16.5.2",
-    "sinon": "^3.2.1",
+    "sinon": "^7.0.0",
     "source-map": "^0.7.3",
     "source-map-loader": "^0.2.4",
     "ts-node": "^7.0.1",
