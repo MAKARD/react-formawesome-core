@@ -1,11 +1,14 @@
 const invariant = require("invariant");
 
-export function checkForDefaults(defaults) {
+export function checkForDefaults(defaults, attributes) {
     invariant(typeof defaults === "object", "'defaults' argument should be an object");
     invariant(
         Object.keys(defaults).length,
         "Defaults does not have any values." +
         "Remove 'defaults' argument instead passing empty object"
+    );
+    Object.keys(defaults).forEach((key) =>
+        invariant(attributes.includes(key), `Attribute '${key}' passed with defaults does not exist in model/schema`)
     );
 }
 

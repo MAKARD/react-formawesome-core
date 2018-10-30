@@ -205,6 +205,8 @@ new ModelValidator({}) // Throw error: Model is not a function
 new ModelValidator("") // Throw error: Model is not a function
 new ModelValidator(CorrectModel, "") // Throw error: defaults is not an object
 new ModelValidator(CorrectModel, {}) // Throw error: defaults is empty
+new ModelValidator(CorrectModel, { nonExistField: "" }) // Throw error: nonExistField does not exist in Model
+
 
 // For SchemaValidator
 new SchemaValidator({}) // Throw error: name is undefined
@@ -213,4 +215,6 @@ new SchemaValidator({name: "Ok"}) // Throw error: properties is undefined
 new SchemaValidator({name: "Ok", properties: /*Non object*/}) // Throw error: properties is not an object
 new SchemaValidator(CorrectSchema, "") // Throw error: defaults is not an object
 new SchemaValidator(CorrectSchema, {}) // Throw error: defaults is empty
+new ModelValidator(CorrectSchema, { nonExistField: "" }) // Throw error: nonExistField does not exist in Schema
+
 ```

@@ -71,9 +71,9 @@ export abstract class AbstractValidator implements ValidatorPublicInterface {
     }
 
     public setDefaults = (defaults: UncertainObject<string>): void => {
-        Checkers.checkForDefaults(defaults);
+        Checkers.checkForDefaults(defaults, this.modelAttributes);
 
-        this.modelContainer.defaults = defaults;
+        Object.keys(defaults).forEach((key) => this.modelContainer.defaults[key] = defaults[key]);
     }
 
     public dropToDefaults = (): void => {

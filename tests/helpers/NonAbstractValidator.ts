@@ -5,6 +5,7 @@ export class NonAbstractValidator extends AbstractValidator {
         super();
 
         this.modelContainer.instance = mock;
+        this.modelContainer.defaults = {};
     }
 
     public get modelName() {
