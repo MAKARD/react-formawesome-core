@@ -33,13 +33,13 @@ export class ModelValidator extends AbstractValidator {
 
     private instantiateModel = (Model: ValidationModelInterface, defaults?: UncertainObject<string>): void => {
         Checkers.checkForModel(Model);
-        defaults !== undefined && Checkers.checkForDefaults(defaults);
 
         const instance = new (Model as InstantiatableValidationModelInterface)();
-
         Checkers.checkForInstance(instance);
 
-        this.modelContainer = { instance, defaults };
+        defaults !== undefined && Checkers.checkForDefaults(defaults, Object.keys(instance));
+
+        this.modelContainer = { instance, defaults: defaults || {} };
 
         this.protectContainer();
 

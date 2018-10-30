@@ -9,6 +9,8 @@ describe("ModelValidator", () => {
         expect(() => new ModelValidator(class Test { })).to.throw();
         expect(() => new ModelValidator(ExampleModel, {})).to.throw();
         expect(() => new ModelValidator(ExampleModel, "" as any)).to.throw();
+
+        expect(() => new ModelValidator(ExampleModel)).to.not.throw();
     });
 
     it("Should validate attributes according to groups", async () => {
