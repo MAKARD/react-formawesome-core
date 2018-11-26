@@ -70,28 +70,30 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
     }
 
     protected handleSubmit = async (): Promise<void> | never => {
-        this.setState({ loading: true, unparsedError: undefined });
+        this.setState({ loading: true, unparsedError: undefined }, this.getBeforeSubmitHandler());
 
         await this.handleValidate();
 
         if (this.hasErrors) {
             this.focusOnError();
-            return this.setState({ loading: false });
+            return this.setState({ loading: false }, this.getAfterSubmitHandler(true));
         }
 
         try {
             await this.props.onSubmit(this.props.validator.modelValues);
         } catch (error) {
-            this.setState({ loading: false });
+            this.setState({ loading: false }, this.getAfterSubmitHandler(true));
 
             if (this.props.errorParser) {
                 this.tryToParseError(error);
             } else {
                 throw error;
             }
+
+            return;
         }
 
-        this.setState({ loading: false });
+        this.setState({ loading: false }, this.getAfterSubmitHandler(false));
     }
 
     protected handleValidate = async (groups?: Array<string>): Promise<void> => {
@@ -120,6 +122,7 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
         if (Array.isArray(parsedErrors)) {
             this.props.validator.addErrors(parsedErrors);
             this.hasErrors && this.focusOnError();
+            this.forceUpdate();
             return;
         };
 
@@ -128,5 +131,17 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
         } else {
             throw error;
         }
+    }
+
+    private getBeforeSubmitHandler = (): () => void | undefined => {
+        return this.props.beforeSubmit
+            ? this.props.beforeSubmit
+            : undefined;
+    }
+
+    private getAfterSubmitHandler = (hasError: boolean): () => void | undefined => {
+        return this.props.afterSubmit
+            ? () => this.props.afterSubmit(hasError)
+            : undefined;
     }
 }
