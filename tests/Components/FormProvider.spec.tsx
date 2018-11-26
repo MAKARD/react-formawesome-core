@@ -187,4 +187,20 @@ describe("<FormProvider />", () => {
 
         expect(throwed).to.be.true;
     });
+
+    it("Should call 'beforeSubmit'/'afterSubmit' if it passed", async () => {
+        let afterSubmit = false;
+        let beforeSubmit = false;
+
+        wrapper.setProps({
+            beforeSubmit: () => beforeSubmit = true,
+            afterSubmit: () => afterSubmit = true
+        });
+
+        await context.onSubmit();
+
+        expect(beforeSubmit).to.be.true;
+        expect(afterSubmit).to.be.true;
+    });
 });
+// tslint:disable-next-line

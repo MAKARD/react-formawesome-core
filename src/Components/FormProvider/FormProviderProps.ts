@@ -8,6 +8,9 @@ export interface FormProviderProps {
 
     errorParser?: (error: any) => Array<{ attribute: string, details: string }> | any;
     handleUnparsedErrors?: boolean;
+
+    beforeSubmit?: () => void;
+    afterSubmit?: (hasErrors: boolean) => void;
 }
 
 export const ValidatorPropTypes: PropTypes.ValidationMap<ValidatorPublicInterface> = {
@@ -28,5 +31,8 @@ export const FormProviderPropTypes: PropTypes.ValidationMap<FormProviderProps> =
     onSubmit: PropTypes.func.isRequired,
 
     errorParser: PropTypes.func,
-    handleUnparsedErrors: PropTypes.bool
+    handleUnparsedErrors: PropTypes.bool,
+
+    beforeSubmit: PropTypes.func,
+    afterSubmit: PropTypes.func
 };

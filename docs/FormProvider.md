@@ -29,6 +29,14 @@ public errorParser = (error: any): Array<{ attribute: string, details: string }>
 ```ts
 public handleUnparsedErrors: boolean;
 ```
+ - `beforeSubmit` - callback that triggers before submitting. `Optional`.
+```ts
+public beforeSubmit: () => void;
+```
+ - `afterSubmit` - callback that triggers after submitting. `Optional`.
+```ts
+public afterSubmit: (hasErrors: boolean) => void;
+```
 
 ### Context
 
