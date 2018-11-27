@@ -4,7 +4,7 @@ import { ValidatorPublicInterface, UncertainObject } from "../../Validators";
 
 export interface FormProviderProps {
     validator: ValidatorPublicInterface;
-    onSubmit: (modelValues: UncertainObject) => Promise<void>;
+    onSubmit: (modelValues: UncertainObject) => Promise<void | { cancelUpdate?: boolean }>;
 
     errorParser?: (error: any) => Array<{ attribute: string, details: string }> | any;
     handleUnparsedErrors?: boolean;
