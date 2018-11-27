@@ -13,8 +13,10 @@ validator = new ModelValidator(ExampleModel);
 validator = new SchemaValidator(ExampleSchema);
 ```
  - `onSubmit` - method that triggers on submitting. `Required`.
+ 
+   `cancelUpdate` object key indicates that form should not update state after submit. `Optional`.
 ```ts
-public onSubmit = async (modelValues: {[key: string]: string | boolean | number}): Promise<void> => {
+public onSubmit = async (modelValues: {[key: string]: string | boolean | number}): Promise<void | { cancelUpdate?: boolean }> => {
     await someAction(modelValues);
 }
 ```

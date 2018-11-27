@@ -202,5 +202,17 @@ describe("<FormProvider />", () => {
         expect(beforeSubmit).to.be.true;
         expect(afterSubmit).to.be.true;
     });
+
+    it("Should not update state when `onSubmit` returns `{ cancelUpdate: true }`", async () => {
+        wrapper.setProps({
+            onSubmit: async () => ({ cancelUpdate: true })
+        });
+
+        makeValid(context);
+
+        await context.onSubmit();
+
+        expect(context.loading).to.be.true;
+    });
 });
 // tslint:disable-next-line

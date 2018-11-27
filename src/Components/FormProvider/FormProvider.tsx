@@ -79,8 +79,9 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
             return this.setState({ loading: false }, this.getAfterSubmitHandler(true));
         }
 
+        let response;
         try {
-            await this.props.onSubmit(this.props.validator.modelValues);
+            response = await this.props.onSubmit(this.props.validator.modelValues);
         } catch (error) {
             this.setState({ loading: false }, this.getAfterSubmitHandler(true));
 
@@ -90,6 +91,10 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
                 throw error;
             }
 
+            return;
+        }
+
+        if (response && response.cancelUpdate) {
             return;
         }
 
