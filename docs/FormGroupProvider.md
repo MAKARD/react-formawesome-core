@@ -1,6 +1,6 @@
 # FormGroupProvider
 
-`FormGroupProvider` component is provide methods and states for controlling user-interactive elements (input / select ..ets). Can control `exactly one` interactive element.
+`FormGroupProvider` component is provide methods and states for controlling user-interactive elements (input / select ..ets).
 
 ### Public interface
 
