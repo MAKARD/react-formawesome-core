@@ -59,12 +59,12 @@ export class FormGroupProvider extends React.PureComponent<FormGroupProviderProp
         formContext.setModelValue(this.props.attribute, value);
 
         /**
-         * model is updated but formContext is immutable
+         * model is updated but formContext not
          * so formContex.modelValues[this.props.attribute]
          * is not updated in this scope.
          *
-         * If value wouldn't setted, error will be thrown
-         * and code below will be not executed
+         * If the value is not set, the error will be thrown
+         * and the code below will not be executed
          */
         const manualUpdatedValues = {
             ...formContext.modelValues,
