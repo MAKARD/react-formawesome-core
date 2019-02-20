@@ -111,9 +111,17 @@ describe("<FormProvider />", () => {
         expect(throwed).to.be.true;
     });
 
-    it("Should do nothing on 'registerElement' if element is undefined or didn't have 'focus' method", () => {
-        expect(context.registerElement("test", undefined)).to.be.false;
-        expect(context.registerElement("test", {})).to.be.false;
+    it("Should do nothing on 'registerElement' if element is undefined or didn't have 'focus' method or exist", () => {
+        expect(context.registerElement("name", undefined)).to.be.false;
+        expect(context.registerElement("name", {})).to.be.false;
+
+        const validElement = {
+            focus: () => undefined
+        };
+
+        validElement.focus();
+        expect(context.registerElement("name", validElement)).to.be.true;
+        expect(context.registerElement("name", validElement)).to.be.false;
     });
 
     it("Should throw error if passed attribute didn't exist in model", () => {
