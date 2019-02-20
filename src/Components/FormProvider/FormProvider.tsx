@@ -53,6 +53,10 @@ export class FormProvider extends React.Component<FormProviderProps, FormProvide
             return false;
         }
 
+        if (!!this.registeredElements[attribute]) {
+            return false;
+        }
+
         Checkers.checkForAttribute(
             this.props.validator.modelAttributes,
             attribute,
