@@ -4,17 +4,22 @@ export interface UncertainObject<ReturnType = any> {
     [key: string]: ReturnType;
 };
 
-export type ValidationModelInterface = UncertainObject;
-
-export interface ModelContainerInterface {
-    instance?: ValidationModelInterface;
-    defaults?: UncertainObject<string>;
+export interface ErrorInterface {
+    attribute: string;
+    details: string;
 }
 
-export interface ValidatorPublicInterface {
+export type ValidationModelInterface = UncertainObject;
+
+export interface ModelContainerInterface<ModelI = UncertainObject> {
+    instance?: ModelI;
+    defaults?: ModelI;
+}
+
+export interface ValidatorPublicInterface<ModelI = UncertainObject> {
     modelName: string;
-    modelValues: UncertainObject;
-    modelErrors: UncertainObject;
+    modelValues: ModelI;
+    modelErrors: UncertainObject<string>;
     modelAttributes: Array<string>;
 
     dropToDefaults: () => void;
@@ -24,11 +29,11 @@ export interface ValidatorPublicInterface {
     addErrors: (errors: Array<{ attribute: string, details: string }>) => void;
 }
 
-export abstract class AbstractValidator implements ValidatorPublicInterface {
+export abstract class AbstractValidator<ModelI = UncertainObject> implements ValidatorPublicInterface<ModelI> {
     public abstract validate: (groups?: Array<string>) => Promise<void>;
     public abstract get modelName(): string;
 
-    protected modelErrorsContainer: Map<string, Array<{ attribute: string, details: string }>> = new Map();
+    protected modelErrorsContainer: Map<string, Array<ErrorInterface>> = new Map();
     protected modelContainer: ModelContainerInterface = {};
 
     // #region Getters
@@ -36,8 +41,8 @@ export abstract class AbstractValidator implements ValidatorPublicInterface {
         return Object.keys(this.modelContainer.instance);
     }
 
-    public get modelValues(): UncertainObject {
-        const values = {};
+    public get modelValues(): ModelI {
+        const values = {} as ModelI;
         this.modelAttributes.forEach((attribute) => {
             if (this.modelContainer.instance[attribute] !== undefined) {
                 values[attribute] = this.modelContainer.instance[attribute];
@@ -63,14 +68,14 @@ export abstract class AbstractValidator implements ValidatorPublicInterface {
     // #endregion
 
     // #region Setters
-    public setModelValue = (attribute: string, value: any): void => {
+    public setModelValue = <T = any>(attribute: string, value: T): void => {
         Checkers.checkForAttribute(this.modelAttributes, attribute, this.modelName);
         Checkers.checkForValue(attribute, value);
 
         this.modelContainer.instance[attribute] = value;
     }
 
-    public setDefaults = (defaults: UncertainObject<string>): void => {
+    public setDefaults = (defaults: ModelI): void => {
         Checkers.checkForDefaults(defaults, this.modelAttributes);
 
         Object.keys(defaults).forEach((key) => this.modelContainer.defaults[key] = defaults[key]);
@@ -94,7 +99,7 @@ export abstract class AbstractValidator implements ValidatorPublicInterface {
         this.modelErrorsContainer.clear();
     }
 
-    public addErrors = (errors: Array<{ attribute: string, details: string }>): void => {
+    public addErrors = (errors: Array<ErrorInterface>): void => {
         errors.forEach(({ attribute, details }) => {
             Checkers.checkForAttribute(this.modelAttributes, attribute, this.modelName);
             Checkers.checkForDetails(details);

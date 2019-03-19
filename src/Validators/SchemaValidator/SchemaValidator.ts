@@ -22,7 +22,6 @@ export class SchemaValidator extends AbstractValidator {
             {
                 ...groups ? { groups } : {},
                 skipMissingProperties: true,
-                forbidUnknownValues: true,
                 validationError: {
                     target: false,
                     value: false

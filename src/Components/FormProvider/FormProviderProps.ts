@@ -13,7 +13,7 @@ export interface FormProviderProps {
     afterSubmit?: (hasErrors: boolean) => void;
 }
 
-export const ValidatorPropTypes: PropTypes.ValidationMap<ValidatorPublicInterface> = {
+export const ValidatorPropTypes: { [P in keyof ValidatorPublicInterface]: PropTypes.Validator<any> } = {
     modelAttributes: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     modelValues: PropTypes.object.isRequired,
     modelErrors: PropTypes.object.isRequired,
