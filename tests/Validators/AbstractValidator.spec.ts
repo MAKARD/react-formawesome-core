@@ -101,7 +101,6 @@ describe("AbstractValidator", () => {
 
         expect(modelValidator.modelErrors).to.not.have.property("name");
 
-
         modelValidator.handleErrorsMock([{
             property: "name",
             constraints: ["test"]
