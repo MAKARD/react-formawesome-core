@@ -2,9 +2,9 @@ import * as React from "react";
 
 import { UncertainObject } from "../../Validators";
 
-export interface FormContextInterface {
-    modelErrors: UncertainObject;
-    modelValues: UncertainObject;
+export interface FormContextInterface<ModelI = UncertainObject> {
+    modelErrors: UncertainObject<string>;
+    modelValues: ModelI;
 
     loading: boolean;
     unparsedError?: any;
