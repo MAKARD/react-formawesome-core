@@ -75,7 +75,7 @@ export abstract class AbstractValidator<ModelI = UncertainObject> implements Val
         this.modelContainer.instance[attribute] = value;
     }
 
-    public setDefaults = (defaults: ModelI): void => {
+    public setDefaults = (defaults: Partial<ModelI>): void => {
         Checkers.checkForDefaults(defaults, this.modelAttributes);
 
         Object.keys(defaults).forEach((key) => this.modelContainer.defaults[key] = defaults[key]);

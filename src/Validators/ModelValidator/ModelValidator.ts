@@ -30,7 +30,7 @@ export class ModelValidator<ModelI = UncertainObject> extends AbstractValidator<
             }).then((errors) => this.handleErrors(errors, groups))
     }
 
-    private instantiateModel = (Model: ValidationModelInterface, defaults?: ModelI): void => {
+    private instantiateModel = (Model: ValidationModelInterface, defaults?: Partial<ModelI>): void => {
         Checkers.checkForModel(Model);
 
         const instance = new (Model as InstantiatableValidationModelInterface)();

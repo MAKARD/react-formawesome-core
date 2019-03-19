@@ -29,7 +29,7 @@ export class SchemaValidator<ModelI = UncertainObject> extends AbstractValidator
             }).then((errors) => this.handleErrors(errors, groups));
     }
 
-    private instantiateModel = (schema: ClassValidator.ValidationSchema, defaults?: ModelI): void => {
+    private instantiateModel = (schema: ClassValidator.ValidationSchema, defaults?: Partial<ModelI>): void => {
         Checkers.checkForSchema(schema);
         defaults !== undefined && Checkers.checkForDefaults(defaults, Object.keys(schema.properties));
 
