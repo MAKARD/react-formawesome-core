@@ -1,7 +1,7 @@
 import * as React from "react";
 
 export interface FormGroupContextInterface {
-    error?: { details: string; attribute: string };
+    error?: string;
     value: any;
 
     isFocused: boolean;
