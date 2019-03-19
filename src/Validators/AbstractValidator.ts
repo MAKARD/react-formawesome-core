@@ -110,8 +110,6 @@ export abstract class AbstractValidator<ModelI = UncertainObject> implements Val
     // #endregion
 
     protected handleErrors = (errors, groups): void => {
-        Checkers.checkForGroup(errors, groups, this.modelName);
-
         if (!groups) {
             this.modelErrorsContainer.clear();
             return this.addErrors(this.convertVendorErrors(errors));

@@ -32,6 +32,7 @@ export function checkForInstance(instance) {
     );
 }
 
+// DEPRECATED
 export function checkForGroup(errors, groups, modelName) {
     invariant(
         !errors.some(({ property }) => property === undefined),
