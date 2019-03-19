@@ -1,10 +1,10 @@
 import * as PropTypes from "prop-types";
 
-import { ValidatorPublicInterface, UncertainObject, ErrorInterface } from "../../Validators";
+import { ValidatorPublicInterface, ErrorInterface } from "../../Validators";
 
 export interface FormProviderProps {
     validator: ValidatorPublicInterface;
-    onSubmit: <T = UncertainObject>(modelValues: T) => Promise<void | { cancelUpdate?: boolean }>;
+    onSubmit: (modelValues: any) => Promise<void | { cancelUpdate?: boolean }>;
 
     errorParser?: (error: any) => Array<ErrorInterface> | any;
     handleUnparsedErrors?: boolean;
