@@ -8,8 +8,8 @@ export interface InstantiatableValidationModelInterface extends ValidationModelI
     new(): ValidationModelInterface;
 }
 
-export class ModelValidator extends AbstractValidator {
-    constructor(Model: ValidationModelInterface, defaults?: UncertainObject) {
+export class ModelValidator<ModelI = UncertainObject> extends AbstractValidator<ModelI> {
+    constructor(Model: ValidationModelInterface, defaults?: ModelI) {
         super();
         this.instantiateModel(Model, defaults);
     }
@@ -30,7 +30,7 @@ export class ModelValidator extends AbstractValidator {
             }).then((errors) => this.handleErrors(errors, groups))
     }
 
-    private instantiateModel = (Model: ValidationModelInterface, defaults?: UncertainObject<string>): void => {
+    private instantiateModel = (Model: ValidationModelInterface, defaults?: ModelI): void => {
         Checkers.checkForModel(Model);
 
         const instance = new (Model as InstantiatableValidationModelInterface)();

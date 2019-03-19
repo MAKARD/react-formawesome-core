@@ -4,10 +4,10 @@ import { AbstractValidator, UncertainObject } from "../AbstractValidator";
 
 import * as Checkers from "../utils/checkers";
 
-export class SchemaValidator extends AbstractValidator {
+export class SchemaValidator<ModelI = UncertainObject> extends AbstractValidator<ModelI> {
     private schemaName?: string;
 
-    constructor(schema: ClassValidator.ValidationSchema, defaults?: UncertainObject) {
+    constructor(schema: ClassValidator.ValidationSchema, defaults?: ModelI) {
         super();
         this.instantiateModel(schema, defaults);
     }
@@ -29,7 +29,7 @@ export class SchemaValidator extends AbstractValidator {
             }).then((errors) => this.handleErrors(errors, groups));
     }
 
-    private instantiateModel = (schema: ClassValidator.ValidationSchema, defaults?: UncertainObject): void => {
+    private instantiateModel = (schema: ClassValidator.ValidationSchema, defaults?: ModelI): void => {
         Checkers.checkForSchema(schema);
         defaults !== undefined && Checkers.checkForDefaults(defaults, Object.keys(schema.properties));
 
