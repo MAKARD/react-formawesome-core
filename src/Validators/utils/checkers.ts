@@ -32,15 +32,6 @@ export function checkForInstance(instance) {
     );
 }
 
-// DEPRECATED
-export function checkForGroup(errors, groups, modelName) {
-    invariant(
-        !errors.some(({ property }) => property === undefined),
-        `Some of passed validation groups (${JSON.stringify(groups)}) does not defined in model/schema. ` +
-        `Check '${modelName}' model/schema rules definition`
-    );
-}
-
 export function checkForAttribute(modelAttributes, attribute, modelName) {
     invariant(
         modelAttributes.includes(attribute),

@@ -82,10 +82,32 @@ describe("AbstractValidator", () => {
         expect(modelValidator.modelErrors).to.deep.equal({ name: "error", phone: "error" });
     });
 
-    it("Should throw error if passed validation group does not defined", async () => {
+    it("Should handle validation errors", async () => {
         const modelValidator = new NonAbstractValidator(mockFields);
 
-        expect(() => modelValidator.handleErrorsMock([{}], [])).to.throw();
+        modelValidator.handleErrorsMock([{
+            property: "name",
+            constraints: ["test"]
+        }]);
+
+        expect(modelValidator.modelErrors).to.have.property("name", "test");
+
+        modelValidator.clear();
+
+        modelValidator.handleErrorsMock([{
+            property: "name",
+            constraints: ["test"]
+        }], []);
+
+        expect(modelValidator.modelErrors).to.not.have.property("name");
+
+
+        modelValidator.handleErrorsMock([{
+            property: "name",
+            constraints: ["test"]
+        }], ["name"]);
+
+        expect(modelValidator.modelErrors).to.have.property("name", "test");
     });
 
     it("Should add validation error", () => {
