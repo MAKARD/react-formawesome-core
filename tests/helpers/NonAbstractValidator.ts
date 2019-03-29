@@ -1,11 +1,13 @@
-import { AbstractValidator } from "../../src";
+import { AbstractValidator, ValidatorConfig } from "../../src";
 
 export class NonAbstractValidator extends AbstractValidator {
-    constructor(mock) {
+    constructor(mock, config: ValidatorConfig = {}) {
         super();
 
         this.modelContainer.instance = mock;
         this.modelContainer.defaults = {};
+
+        this.config = config;
     }
 
     public get modelName() {

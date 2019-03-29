@@ -12,6 +12,8 @@ describe("SchemaValidator", () => {
         expect(() => new SchemaValidator(ExampleSchema, "" as any)).to.throw();
 
         expect(() => new SchemaValidator(ExampleSchema)).to.not.throw();
+        expect(() => new SchemaValidator(ExampleSchema, undefined, { skipAttributeCheck: true })).to.not.throw();
+        expect(() => new SchemaValidator(ExampleSchema, undefined, { skipAttributeCheck: false })).to.not.throw();
     });
 
     it("Should validate attributes according to groups", async () => {

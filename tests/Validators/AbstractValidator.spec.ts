@@ -34,7 +34,7 @@ describe("AbstractValidator", () => {
     });
 
     it("Should set model attribute value", () => {
-        const modelValidator = new NonAbstractValidator(mockFields);
+        const modelValidator = new NonAbstractValidator(mockFields, { skipAttributeCheck: false });
 
         modelValidator.setModelValue("name", "Test name");
         expect(modelValidator.modelValues).to.deep.equal({ name: "Test name" });
@@ -44,7 +44,7 @@ describe("AbstractValidator", () => {
     });
 
     it("Should clear model values", () => {
-        const modelValidator = new NonAbstractValidator(mockFields);
+        const modelValidator = new NonAbstractValidator(mockFields, { skipAttributeCheck: true });
         modelValidator.setModelValue("name", "Test name");
 
         expect(modelValidator.modelValues).to.deep.equal({ name: "Test name" });
@@ -110,11 +110,15 @@ describe("AbstractValidator", () => {
     });
 
     it("Should add validation error", () => {
-        const modelValidator = new NonAbstractValidator(mockFields);
+        const modelValidator = new NonAbstractValidator(mockFields, { skipAttributeCheck: true });
 
         modelValidator.addErrors([{ attribute: "name", details: "test" }]);
 
         expect(modelValidator.modelErrors).to.deep.equal({ name: "test" });
+    });
+
+    it("Should throw on add validation error", () => {
+        const modelValidator = new NonAbstractValidator(mockFields, { skipAttributeCheck: false });
 
         expect(() => modelValidator.addErrors([{ attribute: "test", details: "" }])).to.throw();
         expect(() => modelValidator.addErrors([{ attribute: "name", details: true } as any])).to.throw();
