@@ -74,13 +74,11 @@ export abstract class AbstractValidator<ModelI = UncertainObject> implements Val
 
     // #region Setters
     public setModelValue = <T = any>(attribute: string, value: T): void => {
-        if (!this.config.skipAttributeCheck) {
-            Checkers.checkForAttribute(this.modelAttributes, attribute, this.modelName);
-        }
-
         Checkers.checkForValue(attribute, value);
 
-        this.modelContainer.instance[attribute] = value;
+        if (Checkers.checkForAttribute(this.modelAttributes, attribute, this.modelName, this.config)) {
+            this.modelContainer.instance[attribute] = value;
+        }
     }
 
     public setDefaults = (defaults: Partial<ModelI>): void => {

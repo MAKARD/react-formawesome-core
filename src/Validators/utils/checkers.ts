@@ -32,11 +32,17 @@ export function checkForInstance(instance) {
     );
 }
 
-export function checkForAttribute(modelAttributes, attribute, modelName) {
+export function checkForAttribute(modelAttributes, attribute, modelName, config: any = {}) {
+    if (config.skipAttributeCheck) {
+        return modelAttributes.includes(attribute);
+    }
+
     invariant(
         modelAttributes.includes(attribute),
         `Attribute '${attribute}' does not exist in model/schema '${modelName}'`
     );
+
+    return true;
 }
 
 export function checkForConfig(config) {
