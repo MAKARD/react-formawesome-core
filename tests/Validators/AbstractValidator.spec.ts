@@ -43,6 +43,14 @@ describe("AbstractValidator", () => {
         expect(() => modelValidator.setModelValue("name", {})).to.throw();
     });
 
+    it("Should not set model value", () => {
+        const modelValidator = new NonAbstractValidator(mockFields, { skipAttributeCheck: true });
+
+        modelValidator.setModelValue("test_value", "Test name");
+
+        expect(modelValidator.modelValues).to.deep.equal({});
+    });
+
     it("Should clear model values", () => {
         const modelValidator = new NonAbstractValidator(mockFields, { skipAttributeCheck: true });
         modelValidator.setModelValue("name", "Test name");
