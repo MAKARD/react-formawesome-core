@@ -39,6 +39,13 @@ export function checkForAttribute(modelAttributes, attribute, modelName) {
     );
 }
 
+export function checkForConfig(config) {
+    invariant(
+        typeof config === "object",
+        "You should pass valid config object"
+    );
+}
+
 export function checkForValue(attribute, value) {
     invariant(
         typeof value !== "function" && typeof value !== "object",

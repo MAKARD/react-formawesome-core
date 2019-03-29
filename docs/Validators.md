@@ -182,7 +182,7 @@ const validator = new SchemaValidator(UserSchema, {
 ## Error cases
 ```ts
 // For both of validators
-validator.setDefaults({}) // Throw error: defaults is empty object
+validator.setDefaults({}) // Throw error: defaults is an empty object
 validator.setDefaults("") // Throw error: defaults is not an object
 validator.setDefaults(() => undefined) // Throw error: defaults is not an object
 
@@ -215,6 +215,22 @@ new SchemaValidator({name: "Ok"}) // Throw error: properties is undefined
 new SchemaValidator({name: "Ok", properties: /*Non object*/}) // Throw error: properties is not an object
 new SchemaValidator(CorrectSchema, "") // Throw error: defaults is not an object
 new SchemaValidator(CorrectSchema, {}) // Throw error: defaults is empty
-new ModelValidator(CorrectSchema, { nonExistField: "" }) // Throw error: nonExistField does not exist in Schema
+new SchemaValidator(CorrectSchema, { nonExistField: "" }) // Throw error: nonExistField does not exist in Schema
 
+```
+
+
+### Validator config
+
+Allow configure the validator behavior
+
+```ts
+{
+    skipAttributeCheck?: boolean; // do not throw error when passed attribute does not exist in the model/schema
+}
+```
+
+```ts
+new SchemaValidator(CorrectSchema, undefined, { skipAttributeCheck: true });
+new ModelValidator(CorrectModel, undefined, { skipAttributeCheck: true });
 ```

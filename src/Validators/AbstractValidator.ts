@@ -29,12 +29,17 @@ export interface ValidatorPublicInterface<ModelI = UncertainObject> {
     addErrors: (errors: Array<{ attribute: string, details: string }>) => void;
 }
 
+export interface ValidatorConfig {
+    skipAttributeCheck?: boolean;
+}
+
 export abstract class AbstractValidator<ModelI = UncertainObject> implements ValidatorPublicInterface<ModelI> {
     public abstract validate: (groups?: Array<string>) => Promise<void>;
     public abstract get modelName(): string;
 
     protected modelErrorsContainer: Map<string, Array<ErrorInterface>> = new Map();
     protected modelContainer: ModelContainerInterface = {};
+    protected config: ValidatorConfig = {};
 
     // #region Getters
     public get modelAttributes(): Array<string> {
@@ -69,7 +74,10 @@ export abstract class AbstractValidator<ModelI = UncertainObject> implements Val
 
     // #region Setters
     public setModelValue = <T = any>(attribute: string, value: T): void => {
-        Checkers.checkForAttribute(this.modelAttributes, attribute, this.modelName);
+        if (!this.config.skipAttributeCheck) {
+            Checkers.checkForAttribute(this.modelAttributes, attribute, this.modelName);
+        }
+
         Checkers.checkForValue(attribute, value);
 
         this.modelContainer.instance[attribute] = value;
@@ -101,7 +109,10 @@ export abstract class AbstractValidator<ModelI = UncertainObject> implements Val
 
     public addErrors = (errors: Array<ErrorInterface>): void => {
         errors.forEach(({ attribute, details }) => {
-            Checkers.checkForAttribute(this.modelAttributes, attribute, this.modelName);
+            if (!this.config.skipAttributeCheck) {
+                Checkers.checkForAttribute(this.modelAttributes, attribute, this.modelName);
+            }
+
             Checkers.checkForDetails(details);
 
             this.modelErrorsContainer.set(attribute, [{ attribute, details }]);

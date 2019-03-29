@@ -1,6 +1,6 @@
 import * as ClassValidator from "class-validator";
 
-import { ValidationModelInterface, UncertainObject, AbstractValidator } from "../AbstractValidator";
+import { ValidationModelInterface, UncertainObject, AbstractValidator, ValidatorConfig } from "../AbstractValidator";
 
 import * as Checkers from "../utils/checkers";
 
@@ -9,8 +9,16 @@ export interface InstantiatableValidationModelInterface extends ValidationModelI
 }
 
 export class ModelValidator<ModelI = UncertainObject> extends AbstractValidator<ModelI> {
-    constructor(Model: ValidationModelInterface, defaults?: ModelI) {
+    constructor(Model: ValidationModelInterface, defaults?: ModelI, config?: ValidatorConfig) {
         super();
+
+        if (config) {
+            Checkers.checkForConfig(config);
+
+            this.config = config;
+            Object.seal(this.config);
+        }
+
         this.instantiateModel(Model, defaults);
     }
 

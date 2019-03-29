@@ -1,14 +1,22 @@
 import * as ClassValidator from "class-validator";
 
-import { AbstractValidator, UncertainObject } from "../AbstractValidator";
+import { AbstractValidator, UncertainObject, ValidatorConfig } from "../AbstractValidator";
 
 import * as Checkers from "../utils/checkers";
 
 export class SchemaValidator<ModelI = UncertainObject> extends AbstractValidator<ModelI> {
     private schemaName?: string;
 
-    constructor(schema: ClassValidator.ValidationSchema, defaults?: ModelI) {
+    constructor(schema: ClassValidator.ValidationSchema, defaults?: ModelI, config?: ValidatorConfig) {
         super();
+
+        if (config) {
+            Checkers.checkForConfig(config);
+
+            this.config = config;
+            Object.seal(this.config);
+        }
+
         this.instantiateModel(schema, defaults);
     }
 
