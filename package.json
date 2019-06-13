@@ -1,6 +1,6 @@
 {
   "name": "react-formawesome-core",
-  "version": "1.0.0-rc18",
+  "version": "1.0.1",
   "description": "React validation form core lib",
   "main": "build/index.js",
   "typings": "build/src/index.d.ts",
@@ -54,8 +54,8 @@
     "enzyme-adapter-react-16": "^1.0.0",
     "jsdom": "11.1.0",
     "jsdom-global": "3.0.2",
-    "mocha": "^6.0.0",
-    "nyc": "^13.3.0",
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.1",
     "pre-commit": "^1.2.2",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
