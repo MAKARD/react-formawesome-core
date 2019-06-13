@@ -1,11 +1,11 @@
-# React Formawesome core (Under development)
+# React Formawesome core
 
 [![Build Status](https://travis-ci.org/MAKARD/react-formawesome-core.svg?branch=master)](https://travis-ci.org/MAKARD/react-formawesome-core)
 [![Code coverage](https://codecov.io/gh/MAKARD/react-formawesome-core/branch/master/graphs/badge.svg)](https://codecov.io/gh/MAKARD/react-formawesome-core/branch/master)
 
 React wrapper for [class-validator](https://github.com/typestack/class-validator) library.
 
-Core of [react-native-formawesome](https://github.com/MAKARD/react-native-formawesome) library.
+Core of [react-native-formawesome](https://github.com/MAKARD/react-native-formawesome) and [react-formawesome](https://github.com/MAKARD/react-formawesome) libraries.
 
 [class-validator](https://github.com/typestack/class-validator) is not a peerDependency, so you can access it from this package:
 ```ts
