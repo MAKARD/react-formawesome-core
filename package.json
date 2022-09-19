@@ -46,7 +46,7 @@
     "babel-loader": "^8.0.4",
     "babel-polyfill": "^6.26.0",
     "chai": "^4.2.0",
-    "class-validator": "^0.9.1",
+    "class-validator": "^0.13.2",
     "clean-webpack-plugin": "^0.1.19",
     "codecov": "^3.2.0",
     "cross-env": "^5.0.5",
@@ -101,6 +101,6 @@
   ],
   "dependencies": {
     "invariant": "^2.2.4",
-    "class-validator": "^0.9.1"
+    "class-validator": "^0.13.2"
   }
 }
